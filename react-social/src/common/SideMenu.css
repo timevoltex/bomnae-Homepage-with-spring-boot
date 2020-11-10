@@ -1,0 +1,6 @@
+.side_menu_container{
+    z-index: 100;
+    border: 1px solid black;
+    width: 130px;
+    height: 230px;
+}

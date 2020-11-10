@@ -6,7 +6,8 @@ const request = (options) => {
     })
     
     if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+        headers.append('Authorization', localStorage.getItem(ACCESS_TOKEN))
+        console.log(localStorage.getItem(ACCESS_TOKEN))
     }
 
     const defaults = {headers: headers};
@@ -22,6 +23,16 @@ const request = (options) => {
         })
     );
 };
+
+export function getAdmin(){
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+    return request({
+        url: API_BASE_URL + "/admin/checker",
+        method: "GET"
+    })
+}
 
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {

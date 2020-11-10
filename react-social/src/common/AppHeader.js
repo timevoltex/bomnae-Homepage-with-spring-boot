@@ -1,36 +1,108 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import './AppHeader.css';
+import { Typography, Popover } from '@material-ui/core';
 
-class AppHeader extends Component {
-    render() {
+function AppHeader({ path, authenticated, onLogout }) {
+    const [isActive, setIsActive] = useState(null);
+
+    const openMenu = (event) => {
+        setIsActive(event.currentTarget)
+    }
+
+    const closeMenu = () => {
+        setIsActive(null)
+    }
+
+    const open = Boolean(isActive)
+    if (path == "/") {
+        return (
+            <header className="app-header">
+                <div className="container main">
+                    <div className="app-branding">
+                        <p className="app-title">Bomnae Gallery</p>
+                    </div>
+                    <div className="app-options">
+                        <p>봄내 사진 예술 연구회</p>
+                    </div>
+                </div>
+            </header>
+        )
+    }
+    else {
         return (
             <header className="app-header">
                 <div className="container">
                     <div className="app-branding">
-                        <Link to="/" className="app-title">Spring Social</Link>
+                        <NavLink to="/" className="app-title">Spring Social</NavLink>
                     </div>
                     <div className="app-options">
                         <nav className="app-nav">
-                                { this.props.authenticated ? (
-                                    <ul>
+                            <ul>
+                                <li>
+                                    <NavLink to="/home">인사말</NavLink>
+                                    {/* <NavLink to="/profile">Profile</NavLink> */}
+                                </li>
+                                <li>
+                                    <NavLink to="/regular">정기전</NavLink>
+                                </li>
+                                <li>
+                                    <Typography
+                                        aria-owns={open ? 'mouse-over-popover' : undefined}
+                                        aria-haspopup="true"
+                                        onMouseEnter={openMenu}
+                                    >
+                                        신인전
+                                    </Typography>
+                                    <Popover
+                                        id="mouse-over-popover"
+                                        open={open}
+                                        anchorEl={isActive}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                        onClose={closeMenu}
+                                        disableRestoreFocus
+                                    >
+                                        <nav className="app-nav" onMouseLeave={closeMenu}>
+                                            <ul>
+                                                <li>
+                                                    <NavLink to="/fresh/subject" onClick={closeMenu}>주제전</NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink to="/fresh/free" onClick={closeMenu}>자유전</NavLink>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </Popover>
+                                </li>
+                                <li>
+                                    <NavLink to="/graduate">졸업전</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/guestbook">방명록</NavLink>
+                                </li>
+                                {!authenticated ? (
+                                    <Fragment>
                                         <li>
-                                            <NavLink to="/profile">Profile</NavLink>
+                                            <NavLink to="/login">로그인</NavLink>
                                         </li>
-                                        <li>
-                                            <a onClick={this.props.onLogout}>Logout</a>
-                                        </li>
-                                    </ul>
-                                ): (
-                                    <ul>
-                                        <li>
-                                            <NavLink to="/login">Login</NavLink>        
-                                        </li>
-                                        <li>
-                                            <NavLink to="/signup">Signup</NavLink>        
-                                        </li>
-                                    </ul>
-                                )}
+                                    </Fragment>
+                                ) : (
+                                        <Fragment>
+                                            <li>
+                                                <NavLink to="/profile">마이페이지</NavLink>
+                                                {/* <NavLink to="/signup">Signup</NavLink> */}
+                                            </li>
+                                            <li><NavLink to="/logout" onClick={onLogout}>로그아웃</NavLink></li>
+                                        </Fragment>
+                                    )}
+                            </ul>
                         </nav>
                     </div>
                 </div>

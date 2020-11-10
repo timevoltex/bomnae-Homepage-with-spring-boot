@@ -1,0 +1,1 @@
+export const url = "http://ec2-15-165-217-142.ap-northeast-2.compute.amazonaws.com:8080"

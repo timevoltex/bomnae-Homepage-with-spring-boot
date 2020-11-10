@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import {
   Route,
-  Switch
+  Switch,
+  Redirect,
 } from 'react-router-dom';
 import AppHeader from '../common/AppHeader';
 import Home from '../home/Home';
@@ -11,88 +12,111 @@ import Profile from '../user/profile/Profile';
 import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler';
 import NotFound from '../common/NotFound';
 import LoadingIndicator from '../common/LoadingIndicator';
-import { getCurrentUser } from '../util/APIUtils';
-import { ACCESS_TOKEN } from '../constants';
+import { getCurrentUser, getAdmin } from '../util/APIUtils';
+import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
 import PrivateRoute from '../common/PrivateRoute';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import './App.css';
+import Main from '../main/Main';
+import FreeGallery from '../fresh/FreeGallery';
+import RegularGallery from '../regular/RegularGallery';
+import GraduateGallery from '../graduate/GraduateGallery';
+import GuestBook from '../guestbook/GuestBook';
+import { BrowserRouter as Router } from 'react-router-dom';
+import SubjectGallery from '../fresh/SubjectGallery';
+import { Grid } from '@material-ui/core';
+import GraduateContent from '../graduate/GraduateContent';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      authenticated: false,
-      currentUser: null,
-      loading: false
+
+
+function App() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const loadCurrentlyLoggedInUser = async () => {
+    setLoading(true)
+    try {
+      await getAdmin()
+      setLoading(false)
+      try{
+        setCurrentUser(await getCurrentUser())
+      }catch(err){
+        console.log(err && err.message)
+      }
+      setAuthenticated(true)
+    } catch (err) {
+      setLoading(false)
+      setIsAdmin(true)
+      setAuthenticated(true)
+      console.log(err && err.message)
     }
-
-    this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
   }
-
-  loadCurrentlyLoggedInUser() {
-    this.setState({
-      loading: true
-    });
-
-    getCurrentUser()
-    .then(response => {
-      this.setState({
-        currentUser: response,
-        authenticated: true,
-        loading: false
-      });
-    }).catch(error => {
-      this.setState({
-        loading: false
-      });  
-    });    
-  }
-
-  handleLogout() {
+  const handleLogout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
-    this.setState({
-      authenticated: false,
-      currentUser: null
-    });
-    Alert.success("You're safely logged out!");
+    setAuthenticated(false)
+    setCurrentUser(null)
+    Alert.success("로그아웃 되었습니다.")
   }
 
-  componentDidMount() {
-    this.loadCurrentlyLoggedInUser();
-  }
+  useEffect(() => {
+    loadCurrentlyLoggedInUser()
+    console.log(authenticated)
+  }, [authenticated]
+  )
 
-  render() {
-    if(this.state.loading) {
-      return <LoadingIndicator />
-    }
-
+  if (loading) {
+    return <LoadingIndicator />
+  } else {
     return (
-      <div className="app">
-        <div className="app-top-box">
-          <AppHeader authenticated={this.state.authenticated} onLogout={this.handleLogout} />
+      <Router>
+        <div className="app">
+            <Route render={({ location }) => {
+              return (
+            <div className="app-top-box" style={location.pathname === '/' ? {display:'none'} : {}}>
+                <AppHeader authenticated={authenticated} path={location.pathname} onLogout={handleLogout} />
+          </div>
+              )
+            }} />
+          
+            <Fragment>
+            <Grid container className="app-body">
+              <Grid container item xs={12} className="app-content">
+                <Switch>
+                  <Route exact path="/" component={Main}></Route>
+                  <PrivateRoute path="/profile" authenticated={authenticated} currentUser={currentUser}
+                    component={Profile}>
+                  </PrivateRoute>
+                  <Route path="/home" component={Home}></Route>
+                  {!authenticated ? <Route path="/login"
+                    render={(props) => <Login authenticated={authenticated} {...props} />}></Route> :
+                    <Redirect path="/logout" to="/" />
+                  }
+                  <Route path="/signup"
+                    render={(props) => <Signup authenticated={authenticated} {...props} />}></Route>
+                  <Route path="/fresh/free" component={FreeGallery}></Route>
+                  <Route path="/fresh/subject" component={SubjectGallery}></Route>
+                  <Route path="/regular" component={RegularGallery} />
+                  <Route path="/graduate/:student" component={GraduateContent}></Route>
+                  <Route path="/graduate" component={GraduateGallery} />
+                  <Route path="/guestbook"
+                    render={() => <GuestBook auth={authenticated} />} />
+                  <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
+                  <Route component={NotFound}></Route>
+                </Switch>
+              </Grid>
+            </Grid>
+            <Alert stack={{ limit: 3 }}
+              timeout={3000}
+              position='top-right' effect='slide' offset={65} />
+              </Fragment>
+            
         </div>
-        <div className="app-body">
-          <Switch>
-            <Route exact path="/" component={Home}></Route>           
-            <PrivateRoute path="/profile" authenticated={this.state.authenticated} currentUser={this.state.currentUser}
-              component={Profile}></PrivateRoute>
-            <Route path="/login"
-              render={(props) => <Login authenticated={this.state.authenticated} {...props} />}></Route>
-            <Route path="/signup"
-              render={(props) => <Signup authenticated={this.state.authenticated} {...props} />}></Route>
-            <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>  
-            <Route component={NotFound}></Route>
-          </Switch>
-        </div>
-        <Alert stack={{limit: 3}} 
-          timeout = {3000}
-          position='top-right' effect='slide' offset={65} />
-      </div>
-    );
+      </Router>
+    )
   }
 }
-
 export default App;
