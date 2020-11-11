@@ -9,3 +9,4 @@ export const FACEBOOK_AUTH_URL = API_BASE_URL + '/oauth2/authorize/facebook?redi
 export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect_uri=' + OAUTH2_REDIRECT_URI;
 
 export const GUESTBOOK_URL = API_BASE_URL + '/guestbook-list';
+export const DEVELOPMENT_URL ='http://14.32.217.141:8080'

@@ -28,6 +28,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import SubjectGallery from '../fresh/SubjectGallery';
 import { Grid } from '@material-ui/core';
 import GraduateContent from '../graduate/GraduateContent';
+import Admin from '../admin/Admin';
+import AdminRouter from '../admin/AdminRouter';
+import AdminList from '../admin/AdminList';
 
 
 
@@ -40,19 +43,21 @@ function App() {
   const loadCurrentlyLoggedInUser = async () => {
     setLoading(true)
     try {
-      await getAdmin()
+      setCurrentUser(await getCurrentUser())
       setLoading(false)
+      setAuthenticated(true)
+      console.log('왜 안되는거냐')
+    } catch (err) {
       try{
-        setCurrentUser(await getCurrentUser())
+        await getAdmin()
+        setLoading(false)
+        setIsAdmin(true)
+        setAuthenticated(true)
+        console.log("넌 관리자냐?")
       }catch(err){
+        setLoading(false)
         console.log(err && err.message)
       }
-      setAuthenticated(true)
-    } catch (err) {
-      setLoading(false)
-      setIsAdmin(true)
-      setAuthenticated(true)
-      console.log(err && err.message)
     }
   }
   const handleLogout = () => {
@@ -64,13 +69,14 @@ function App() {
 
   useEffect(() => {
     loadCurrentlyLoggedInUser()
-    console.log(authenticated)
+    console.log(authenticated + `관리자? ${isAdmin}`)
+
   }, [authenticated]
   )
 
   if (loading) {
     return <LoadingIndicator />
-  } else {
+  } else{
     return (
       <Router>
         <div className="app">
@@ -91,10 +97,11 @@ function App() {
                     component={Profile}>
                   </PrivateRoute>
                   <Route path="/home" component={Home}></Route>
-                  {!authenticated ? <Route path="/login"
-                    render={(props) => <Login authenticated={authenticated} {...props} />}></Route> :
+                  <Route path="/login"
+                    render={(props) => <Login authenticated={authenticated} {...props} />}></Route> 
                     <Redirect path="/logout" to="/" />
-                  }
+                  <AdminRouter path="/admin" isAdmin = {isAdmin} component={Admin} />
+                  <AdminRouter path="/list" isAdmin = {isAdmin} component={AdminList}/>
                   <Route path="/signup"
                     render={(props) => <Signup authenticated={authenticated} {...props} />}></Route>
                   <Route path="/fresh/free" component={FreeGallery}></Route>
@@ -109,9 +116,6 @@ function App() {
                 </Switch>
               </Grid>
             </Grid>
-            <Alert stack={{ limit: 3 }}
-              timeout={3000}
-              position='top-right' effect='slide' offset={65} />
               </Fragment>
             
         </div>
@@ -119,4 +123,5 @@ function App() {
     )
   }
 }
+
 export default App;

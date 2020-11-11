@@ -3,18 +3,19 @@ import {
     Route,
     Redirect
   } from "react-router-dom";
+import { ADMIN_TOKEN } from '../constants';
   
-  
-const AdminRouter = ({ component: Component, authenticated, ...rest }) => (
+
+const AdminRouter = ({ component: Component, isAdmin, ...rest }) => (
     <Route
       {...rest}
       render={props =>
-        authenticated ? (
+        localStorage.getItem(ADMIN_TOKEN) ? (
           <Component {...rest} {...props} />
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/',
               state: { from: props.location }
             }}
           />

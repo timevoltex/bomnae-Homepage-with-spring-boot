@@ -83,7 +83,8 @@ function LoginForm(props) {
                 localStorage.setItem(ACCESS_TOKEN, `${response.tokenType} ${response.accessToken}`);
                 localStorage.setItem(ADMIN_TOKEN, true)
                 Alert.success("You're successfully logged in!");
-                props.history.push("/")
+                console.log(response.accessToken);
+                props.history.push("/admin")
             }).catch(error => {
                 Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
                 console.log(error && error.message)
