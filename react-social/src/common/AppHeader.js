@@ -2,8 +2,9 @@ import React, {  Fragment, useState } from 'react';
 import {  NavLink, Link } from 'react-router-dom';
 import './AppHeader.css';
 import { Typography, Popover } from '@material-ui/core';
+import { ADMIN_TOKEN } from '../constants';
 
-function AppHeader({ path, authenticated, onLogout }) {
+function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
     const [isActive, setIsActive] = useState(null);
     const openMenu = (event) => {
         setIsActive(event.currentTarget)
@@ -12,9 +13,9 @@ function AppHeader({ path, authenticated, onLogout }) {
     const closeMenu = () => {
         setIsActive(null)
     }
-
     const open = Boolean(isActive)
-    if(path == '/admin' || path == '/list'){
+    const isAdmin = localStorage.getItem(ADMIN_TOKEN)
+    if(isAdmin === 'true'){
         return(
             <header className="app-header">
                 <div className="container main">
@@ -22,8 +23,21 @@ function AppHeader({ path, authenticated, onLogout }) {
                         <p className="app-title">관리자 짱짱맨</p>
                     </div>
                     <div className="app-options">
-                        <Link to="/admin">업로드</Link>
-                        <Link to="/list">리스트</Link>
+                        <nav className="app-nav">
+                            <ul>
+                                <li>
+
+                        <NavLink to="/admin">업로드</NavLink>
+                                </li>
+                                <li>
+                        <NavLink to="/admin/list">리스트</NavLink>
+
+                                </li>
+                                <li>
+                                    <NavLink to="/admin/signOut" onClick={onAdminLogout}>관리자 로그아웃</NavLink>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </header>

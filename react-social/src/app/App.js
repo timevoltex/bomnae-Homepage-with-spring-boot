@@ -13,7 +13,7 @@ import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler';
 import NotFound from '../common/NotFound';
 import LoadingIndicator from '../common/LoadingIndicator';
 import { getCurrentUser, getAdmin } from '../util/APIUtils';
-import { ACCESS_TOKEN, API_BASE_URL } from '../constants';
+import { ACCESS_TOKEN, ADMIN_TOKEN } from '../constants';
 import PrivateRoute from '../common/PrivateRoute';
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
@@ -28,10 +28,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import SubjectGallery from '../fresh/SubjectGallery';
 import { Grid } from '@material-ui/core';
 import GraduateContent from '../graduate/GraduateContent';
-import Admin from '../admin/Admin';
 import AdminRouter from '../admin/AdminRouter';
-import AdminList from '../admin/AdminList';
-
+import Scaleup from '../common/Sacleup';
 
 
 function App() {
@@ -39,6 +37,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [scale, setScale] = useState(false);
 
   const loadCurrentlyLoggedInUser = async () => {
     setLoading(true)
@@ -66,14 +65,30 @@ function App() {
     setCurrentUser(null)
     Alert.success("로그아웃 되었습니다.")
   }
+  const adminLogout = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.setItem(ADMIN_TOKEN, false)
+    setAuthenticated(false)
+    setIsAdmin(false)
+    setCurrentUser(null)
+    Alert.success("로그아웃 되었습니다.")
+  }
+  
+  const onScaleUp = () => {
+    setScale(!scale);
+  }
 
   useEffect(() => {
     loadCurrentlyLoggedInUser()
+    console.log(localStorage.getItem(ADMIN_TOKEN))
     console.log(authenticated + `관리자? ${isAdmin}`)
 
   }, [authenticated]
   )
 
+  useEffect(() => {
+    console.log(scale)
+  },[scale])
   if (loading) {
     return <LoadingIndicator />
   } else{
@@ -83,12 +98,10 @@ function App() {
             <Route render={({ location }) => {
               return (
             <div className="app-top-box" style={location.pathname === '/' ? {display:'none'} : {}}>
-                <AppHeader authenticated={authenticated} path={location.pathname} onLogout={handleLogout} />
+                <AppHeader authenticated={authenticated} path={location.pathname} onLogout={handleLogout} onAdminLogout={adminLogout}/>
           </div>
               )
             }} />
-          
-            <Fragment>
             <Grid container className="app-body">
               <Grid container item xs={12} className="app-content">
                 <Switch>
@@ -99,14 +112,14 @@ function App() {
                   <Route path="/home" component={Home}></Route>
                   <Route path="/login"
                     render={(props) => <Login authenticated={authenticated} {...props} />}></Route> 
-                    <Redirect path="/logout" to="/" />
-                  <AdminRouter path="/admin" isAdmin = {isAdmin} component={Admin} />
-                  <AdminRouter path="/list" isAdmin = {isAdmin} component={AdminList}/>
+                  <Redirect path="/logout" to="/" />
+                  <Redirect path="/admin/signOut" to="/" />
+                  <Route path="/admin" render={({location}) => <AdminRouter isAdmin={isAdmin} location={location} />}/>
                   <Route path="/signup"
                     render={(props) => <Signup authenticated={authenticated} {...props} />}></Route>
                   <Route path="/fresh/free" component={FreeGallery}></Route>
                   <Route path="/fresh/subject" component={SubjectGallery}></Route>
-                  <Route path="/regular" component={RegularGallery} />
+                  <Route path="/regular" render={(onScaleUp) => <RegularGallery scaleup={onScaleUp}/>} />
                   <Route path="/graduate/:student" component={GraduateContent}></Route>
                   <Route path="/graduate" component={GraduateGallery} />
                   <Route path="/guestbook"
@@ -115,9 +128,8 @@ function App() {
                   <Route component={NotFound}></Route>
                 </Switch>
               </Grid>
-            </Grid>
-              </Fragment>
-            
+            </Grid>       
+        <Scaleup isScale={scale}/>
         </div>
       </Router>
     )
