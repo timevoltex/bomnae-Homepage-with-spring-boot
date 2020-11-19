@@ -23,12 +23,12 @@ jobs:
       - name: 의존 파일 설치
         working-directory: ./react-social
         run: |
-             yarn install
+             yarn install 
 
       - name: React Build 작업
         working-directory: ./react-social
         run: | 
-            yarn build
+          yarn upgrade && yarn build
       
       - name: S3에 배포하기 
         env:
