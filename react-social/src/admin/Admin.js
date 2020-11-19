@@ -42,8 +42,8 @@ function Admin() {
     const inputName = target.name;
     const inputValue = target.value;
 
-    if (inputName == "subvar" || inputName == "subject") {
-      if (inputValue == "자유" && inputName == "subject") {
+    if (inputName === "subvar" || inputName === "subject") {
+      if (inputValue === "자유" && inputName === "subject") {
         isFree(true);
       } else {
         isFree(false);
@@ -60,7 +60,7 @@ function Admin() {
   const onChangeFormat = (e) => {
     const target = e.target;
     const inputValue = target.value;
-    if (inputValue == "신인전") {
+    if (inputValue === "신인전") {
       setFormatValue({ ...formatValue, gallery: inputValue });
       isFresh(true);
     } else {
@@ -76,7 +76,7 @@ function Admin() {
     if (formatValue.gallery == "정기전") {
       setInfo({ ...info, format: formatValue.gallery });
     } else {
-      if (formatValue.subject == "자유") {
+      if (formatValue.subject === "자유") {
         setInfo({
           ...info,
           format: `${formatValue.gallery}-${formatValue.subject}`,
@@ -232,7 +232,7 @@ function Admin() {
         </label>
         <button onClick={onSubmit}>제출</button>
       </div>
-      <img src={thumbnail} style={{ width: "50vmax" }} />
+      <img src={thumbnail} style={{ width: "50vmax" }} alt="thumbnail" />
     </div>
   );
 }

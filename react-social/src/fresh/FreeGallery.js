@@ -4,10 +4,16 @@ import { Grid } from "@material-ui/core";
 import SideMenu from "../common/SideMenu";
 import axios from "axios";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
+import Scaleup from "../common/Sacleup";
 
 function FreshGallery() {
   const [item, setItem] = useState([]);
   const [sub, setSub] = useState("전체");
+  const [isScale, setIsScale] = useState(false);
+  const onScaleUp = () => {
+    setIsScale(!isScale);
+  };
+
   const getItem = async () => {
     try {
       const response = await axios.get(
@@ -37,7 +43,7 @@ function FreshGallery() {
       } else {
         setSub(subject);
         const response = await axios.get(
-          API_BASE_URL + `/api/v1/artwork/format/신인전-주제-${subject}`,
+          API_BASE_URL + `/api/v1/artwork/format/신인전-주제-${sub}`,
           {
             headers: { Autorization: localStorage.getItem(ACCESS_TOKEN) },
           }
@@ -58,8 +64,9 @@ function FreshGallery() {
         <SideMenu onGetItem={{ getSubjectItem, getItem }} />
       </Grid>
       <Grid item xd={12} sm container>
-        <GalleryContent data={item} />
+        <GalleryContent data={item} onClick={onScaleUp} />
       </Grid>
+      <Scaleup data={item} isScale={isScale} onScaleUp={onScaleUp} />
     </Grid>
   );
 }

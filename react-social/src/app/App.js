@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
@@ -21,7 +21,6 @@ import RegularGallery from "../regular/RegularGallery";
 import GraduateGallery from "../graduate/GraduateGallery";
 import GuestBook from "../guestbook/GuestBook";
 import { BrowserRouter as Router } from "react-router-dom";
-import SubjectGallery from "../fresh/SubjectGallery";
 import { Grid } from "@material-ui/core";
 import GraduateContent from "../graduate/GraduateContent";
 import AdminRouter from "../admin/AdminRouter";
@@ -32,7 +31,6 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [scale, setScale] = useState(false);
 
   const loadCurrentlyLoggedInUser = async () => {
     setLoading(true);
@@ -69,19 +67,12 @@ function App() {
     Alert.success("로그아웃 되었습니다.");
   };
 
-  const onScaleUp = () => {
-    setScale(!scale);
-  };
-
   useEffect(() => {
     loadCurrentlyLoggedInUser();
     console.log(localStorage.getItem(ADMIN_TOKEN));
     console.log(authenticated + `관리자? ${isAdmin}`);
   }, [authenticated]);
 
-  useEffect(() => {
-    console.log(scale);
-  }, [scale]);
   if (loading) {
     return <LoadingIndicator />;
   } else {
@@ -137,10 +128,7 @@ function App() {
                   )}
                 ></Route>
                 <Route path="/fresh" component={FreshGallery}></Route>
-                <Route
-                  path="/regular"
-                  render={(onScaleUp) => <RegularGallery scaleup={onScaleUp} />}
-                />
+                <Route path="/regular" render={() => <RegularGallery />} />
                 <Route
                   path="/graduate/:student"
                   component={GraduateContent}
@@ -158,7 +146,6 @@ function App() {
               </Switch>
             </Grid>
           </Grid>
-          <Scaleup isScale={scale} />
         </div>
       </Router>
     );
