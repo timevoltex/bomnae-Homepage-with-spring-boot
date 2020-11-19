@@ -23,7 +23,7 @@ jobs:
       - name: 의존 파일 설치
         working-directory: ./react-social
         run: |
-            npm install
+             yarn install
 
       - name: React Build 작업
         working-directory: ./react-social
