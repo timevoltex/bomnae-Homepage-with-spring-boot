@@ -24,7 +24,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import GraduateContent from "../graduate/GraduateContent";
 import AdminRouter from "../admin/AdminRouter";
-import Scaleup from "../common/Sacleup";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
