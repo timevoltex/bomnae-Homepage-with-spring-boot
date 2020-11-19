@@ -28,7 +28,7 @@ jobs:
       - name: React Build 작업
         working-directory: ./react-social
         run: | 
-            npm run build
+            yarn build
       
       - name: S3에 배포하기 
         env:
