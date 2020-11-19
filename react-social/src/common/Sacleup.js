@@ -22,7 +22,7 @@ const Container = styled.div.attrs(props => ({
     scale: props.scale || false
 }))`
     position: fixed;
-    display: ${props => props.scale ? "block" : "none"}
+    display: ${props => props.scale ? "block" : "none"};
     width: 100vw;
     height: 100vh;
     top:0;
