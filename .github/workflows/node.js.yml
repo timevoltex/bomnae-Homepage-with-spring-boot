@@ -38,6 +38,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws s3 sync \
-             build s3://bomnae-static/front/ 
+             build s3://bomnae-static/front/ \
                 --recursive \
-                --region ap-northeast-2 \
+                --region ap-northeast-2
