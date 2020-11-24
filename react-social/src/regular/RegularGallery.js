@@ -12,31 +12,36 @@ function RegularGallery() {
   const [generate, setGenerate] = useState(null);
   const [isScale, setIsScale] = useState(false);
   const [detail, setDetail] = useState([]);
+  const [isDone, setIsDone] = useState(false);
   const getImage = async () => {
-    getItem("정기전")
-      .then((response) => {
-        console.log(response);
-        const data = response;
-        setItem(data);
-        try {
-          data.map(async (image, i) => {
-            const detailResponse = await axios.get(
-              API_BASE_URL + `/api/v1/artwork/${image.id}`,
-              {
-                headers: { Authorization: localStorage.getItem(ACCESS_TOKEN) },
-              }
-            );
-            const detailData = detailResponse.data;
-            setDetail({ ...detail, detailData });
-            console.log(detail);
-          });
-        } catch (err) {
+    if (!isDone) {
+      getItem("정기전")
+        .then((response) => {
+          console.log(response);
+          const data = response;
+          setItem(data);
+          try {
+            data.map(async (image, i) => {
+              const detailResponse = await axios.get(
+                API_BASE_URL + `/api/v1/artwork/${image.id}`,
+                {
+                  headers: {
+                    Authorization: localStorage.getItem(ACCESS_TOKEN),
+                  },
+                }
+              );
+              const detailData = detailResponse.data;
+              setDetail((detail[i] = detailData));
+            });
+            setIsDone(true);
+          } catch (err) {
+            console.log(err);
+          }
+        })
+        .catch((err) => {
           console.log(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        });
+    }
   };
   const getGenItem = async (gen) => {
     if (gen !== null) {

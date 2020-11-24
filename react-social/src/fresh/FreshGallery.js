@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import GalleryContent from "../common/GalleryContent";
 import { Grid } from "@material-ui/core";
 import SideMenu from "../common/SideMenu";
-import axios from "axios";
-import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 import Scaleup from "../common/Sacleup";
 import getItem from "../common/getItem";
 
@@ -35,7 +33,7 @@ function FreshGallery() {
         });
       } else {
         setSub(subject);
-        getItem("신인전-주제", subject).then((response) => {
+        getItem("신인전-주제", sub).then((response) => {
           const data = response;
           setItem(data);
         });

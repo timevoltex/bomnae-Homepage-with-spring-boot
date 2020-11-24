@@ -3,7 +3,6 @@ import axios from "axios";
 import { API_BASE_URL, ACCESS_TOKEN, DEVELOPMENT_URL } from "../constants";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Modal } from "@material-ui/core";
 
 function AdminList() {
   const [list, setList] = useState([]);
@@ -22,7 +21,6 @@ function AdminList() {
   };
 
   useEffect(() => {
-    let mounted = true;
     const getArtList = async () => {
       try {
         const response = await axios.get(
@@ -40,9 +38,6 @@ function AdminList() {
       }
     };
     getArtList();
-    console.log(list);
-    console.log(loading);
-    return () => (mounted = false);
   }, []);
   if (!loading) return <div>로딩중....</div>;
   else {
@@ -52,21 +47,31 @@ function AdminList() {
           console.log(item.id);
           return (
             <ItemContainer key={item.id}>
-              <img src={item.filePath} style={{ width: "50vmin" }} />
-              <p>
-                <input readOnly className="title" value={item.title} />
-              </p>
-              <FormContainer>
+              <img
+                src={item.filePath}
+                style={{ width: "50vmin" }}
+                alt="thumbnail"
+              />
+              <div style={{ height: "inherit", margin: "auto 10em" }}>
                 <p>
-                  <button onClick={() => onDelete(item.id)}>삭제</button>
+                  <input readOnly className="title" value={item.title} />
                 </p>
-
-                <Link
-                  to={{ pathname: "/admin/update", state: { item: item.id } }}
-                >
-                  수정
-                </Link>
-              </FormContainer>
+                <FormContainer>
+                  <p>
+                    <button onClick={() => onDelete(item.id)}>삭제</button>
+                  </p>
+                  <Link
+                    to={{ pathname: "/admin/update", state: { item: item.id } }}
+                  >
+                    전시정보 수정
+                  </Link>
+                  <Link
+                    to={{ pathname: "/admin/meta", state: { item: item.id } }}
+                  >
+                    메타데이터 수정
+                  </Link>
+                </FormContainer>
+              </div>
             </ItemContainer>
           );
         })}
@@ -77,7 +82,9 @@ function AdminList() {
 
 export default AdminList;
 
-const ItemContainer = styled.div``;
+const ItemContainer = styled.div`
+  display: flex;
+`;
 
 const FormContainer = styled.div`
   display: flex;

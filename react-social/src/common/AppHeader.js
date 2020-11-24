@@ -1,19 +1,9 @@
-import React, { Fragment, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { Fragment } from "react";
+import { NavLink } from "react-router-dom";
 import "./AppHeader.css";
-import { Typography, Popover } from "@material-ui/core";
 import { ADMIN_TOKEN } from "../constants";
 
 function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
-  const [isActive, setIsActive] = useState(null);
-  const openMenu = (event) => {
-    setIsActive(event.currentTarget);
-  };
-
-  const closeMenu = () => {
-    setIsActive(null);
-  };
-  const open = Boolean(isActive);
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
   if (isAdmin === "true") {
     return (
@@ -43,7 +33,7 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
       </header>
     );
   } else {
-    if (path == "/") {
+    if (path === "/") {
       return (
         <header className="app-header">
           <div className="container main">
@@ -62,7 +52,7 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
           <div className="container">
             <div className="app-branding">
               <NavLink to="/" className="app-title">
-                Spring Social
+                봄내 온라인 사진전
               </NavLink>
             </div>
             <div className="app-options">

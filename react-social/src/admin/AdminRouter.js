@@ -1,26 +1,24 @@
-import React, { Fragment } from 'react';
-import {
-    Route,
-    Redirect
-  } from "react-router-dom";
-import { ADMIN_TOKEN } from '../constants';
-import Admin from './Admin';
-import AdminList from './AdminList';
-import AdminUpdate from './AdminUpdate';
-  
+import React, { Fragment } from "react";
+import { Route, Redirect } from "react-router-dom";
+import { ADMIN_TOKEN } from "../constants";
+import Admin from "./Admin";
+import AdminList from "./AdminList";
+import AdminUpdate from "./AdminUpdate";
+import AdminMeta from "./AdminMeta";
 
-const AdminRouter = ({ ...props}) => {
-  if(localStorage.getItem(ADMIN_TOKEN) === 'true'){
-    return(
+const AdminRouter = ({ ...props }) => {
+  if (localStorage.getItem(ADMIN_TOKEN) === "true") {
+    return (
       <Fragment>
-        <Route exact path="/admin" component={Admin}/>
-        <Route path="/admin/list" component={AdminList}/>
-        <Route path="/admin/update" component={AdminUpdate}/>
+        <Route exact path="/admin" component={Admin} />
+        <Route path="/admin/list" component={AdminList} />
+        <Route path="/admin/update" component={AdminUpdate} />
+        <Route path="/admin/meta" component={AdminMeta} />
       </Fragment>
-    )
-  }else{
-    return <Redirect to={{pathname: "/", state: {from: props.location}}}/>
+    );
+  } else {
+    return <Redirect to={{ pathname: "/", state: { from: props.location } }} />;
   }
 };
-  
-export default AdminRouter
+
+export default AdminRouter;

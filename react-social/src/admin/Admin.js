@@ -72,7 +72,7 @@ function Admin() {
   };
 
   const setFormat = () => {
-    if (formatValue.gallery == "정기전") {
+    if (formatValue.gallery === "정기전") {
       setInfo({ ...info, format: formatValue.gallery });
     } else {
       if (formatValue.subject === "자유") {

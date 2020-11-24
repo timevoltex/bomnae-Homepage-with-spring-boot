@@ -1,5 +1,5 @@
 import React, { useRef, Fragment } from "react";
-import Scaleup from "./Sacleup";
+import styled from "styled-components";
 
 function GalleryContent({ data, onClick }) {
   const scaleUp = useRef(document.createElement("div"));
@@ -12,13 +12,15 @@ function GalleryContent({ data, onClick }) {
       >
         {data.map((src, i) => {
           return (
-            <img
-              style={{ width: "50%" }}
-              src={src.filePath}
+            <Image
               key={i}
-              alt="content"
+              style={{
+                backgroundImage: `url("${src.filePath}")`,
+              }}
               onClick={onClick}
-            />
+            >
+              {/* <img style={{width:}} src={src.filePath} alt="content" onClick={onClick} /> */}
+            </Image>
           );
         })}
       </div>
@@ -27,3 +29,10 @@ function GalleryContent({ data, onClick }) {
 }
 
 export default GalleryContent;
+
+const Image = styled.div`
+  width: 40vw;
+  height: 40vw;
+  background-size: cover;
+  background-position: center;
+`;

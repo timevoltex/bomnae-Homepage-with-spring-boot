@@ -13,10 +13,10 @@ function Scaleup({ isScale, onScaleUp, data }) {
     fade: true,
   };
   return (
-    <OverlayContainer scale={isScale}>
+    <OverlayContainer scale={isScale ? 1 : 0}>
       <Background onClick={onScaleUp} />
       <ContentContainer>
-        <div style={{ position: "relative", width: "100%" }}>
+        {/* <div style={{ position: "relative", width: "100%" }}>
           <div
             style={{
               paddingBottom: "200%",
@@ -30,29 +30,35 @@ function Scaleup({ isScale, onScaleUp, data }) {
                 left: "8vmax",
                 overflow: "hidden",
               }}
-            >
-              <Slider {...settings}>
-                {data.map((image, i) => {
-                  return (
-                    <div key={i}>
-                      <div
-                        className="test"
-                        style={{ display: "flex", width: "max-content" }}
-                      >
-                        <img src={image.filePath} style={{ width: "50vmin" }} />
-                        <div
-                          style={{ width: "50vmin", backgroundColor: "white" }}
-                        >
-                          <p>상세정보</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </Slider>
-            </div>
+            > */}
+        <Slider {...settings}>
+          {data.map((image, i) => {
+            return (
+              <div key={i}>
+                <div
+                  className="test"
+                  style={{
+                    display: "flex",
+                    width: "max-content",
+                    margin: "13vmin auto",
+                  }}
+                >
+                  <img
+                    src={image.filePath}
+                    style={{ width: "50vmin" }}
+                    alt="content"
+                  />
+                  <div style={{ width: "50vmin", backgroundColor: "white" }}>
+                    <p>상세정보</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </Slider>
+        {/* </div>
           </div>
-        </div>
+        </div> */}
       </ContentContainer>
     </OverlayContainer>
   );
@@ -60,11 +66,9 @@ function Scaleup({ isScale, onScaleUp, data }) {
 
 export default Scaleup;
 
-const OverlayContainer = styled.div.attrs((props) => ({
-  scale: props.scale || false,
-}))`
+const OverlayContainer = styled.div`
   position: fixed;
-  display: ${(props) => (props.scale ? "block" : "none")};
+  display: ${(props) => (props.scale === 1 ? "block" : "none")};
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -79,7 +83,7 @@ const Background = styled.div`
 
 const ContentContainer = styled.div`
   overflow: hidden;
-  width: 100vmax;
+  width: 75%;
   max-width: 80vmax;
   margin: 0 auto;
 `;

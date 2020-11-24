@@ -1,16 +1,13 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import {
   GOOGLE_AUTH_URL,
-  FACEBOOK_AUTH_URL,
-  GITHUB_AUTH_URL,
   ACCESS_TOKEN,
   ADMIN_TOKEN,
   KAKAO_AUTH_URL,
 } from "../../constants";
 import { login } from "../../util/APIUtils";
-import { Link, Redirect, withRouter } from "react-router-dom";
-import fbLogo from "../../img/fb-logo.png";
+import { Redirect, withRouter } from "react-router-dom";
 import googleLogo from "../../img/google-logo.png";
 import githubLogo from "../../img/github-logo.png";
 import Alert from "react-s-alert";
@@ -48,9 +45,6 @@ function Login(props) {
           <span className="or-text">OR</span>
         </div>
         <LoginForm {...props} />
-        <span className="signup-link">
-          New user? <Link to="/signup">Sign up!</Link>
-        </span>
       </div>
     </div>
   );
@@ -102,10 +96,7 @@ function LoginForm(props) {
         props.history.push("/admin");
       })
       .catch((error) => {
-        Alert.error(
-          (error && error.message) ||
-            "Oops! Something went wrong. Please try again!"
-        );
+        alert("관리자용입니다. 소셜로그인을 이용해주세요.");
         console.log(error && error.message);
       });
   };
