@@ -37,7 +37,11 @@ function SideMenu({ isRegular, name, onGetItem }) {
         component="nav"
         aria-label="regular-list-subheader"
         subheader={
-          <ListSubheader component="div" id="regular-list-subheader">
+          <ListSubheader
+            component="div"
+            id="regular-list-subheader"
+            disableSticky={true}
+          >
             정기전
           </ListSubheader>
         }
@@ -62,7 +66,11 @@ function SideMenu({ isRegular, name, onGetItem }) {
         component="nav"
         aria-label="nested-list-subheader"
         subheader={
-          <ListSubheader component="div" id="nested-list-sub-header">
+          <ListSubheader
+            component="div"
+            id="nested-list-sub-header"
+            disableSticky={true}
+          >
             졸업전
           </ListSubheader>
         }
@@ -87,7 +95,11 @@ function SideMenu({ isRegular, name, onGetItem }) {
         component="nav"
         aria-label="nested-list-subheader"
         subheader={
-          <ListSubheader component="div" id="nested-list-sub-header">
+          <ListSubheader
+            component="div"
+            id="nested-list-sub-header"
+            disableSticky={true}
+          >
             신인전
           </ListSubheader>
         }

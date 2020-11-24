@@ -16,7 +16,7 @@ import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Main from "../main/Main";
-import FreshGallery from "../fresh/FreeGallery";
+import FreshGallery from "../fresh/FreshGallery";
 import RegularGallery from "../regular/RegularGallery";
 import GraduateGallery from "../graduate/GraduateGallery";
 import GuestBook from "../guestbook/GuestBook";

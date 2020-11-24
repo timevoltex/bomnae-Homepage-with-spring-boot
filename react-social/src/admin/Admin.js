@@ -71,8 +71,7 @@ function Admin() {
     console.log(formatValue);
   };
 
-  const onSubmit = async () => {
-    const formData = new FormData();
+  const setFormat = () => {
     if (formatValue.gallery == "정기전") {
       setInfo({ ...info, format: formatValue.gallery });
     } else {
@@ -88,6 +87,11 @@ function Admin() {
         });
       }
     }
+  };
+
+  const onSubmit = async () => {
+    const formData = new FormData();
+    console.log(info.format);
     formData.append("title", info.title);
     formData.append("content", info.content);
     formData.append("file", info.file);
@@ -105,6 +109,8 @@ function Admin() {
         },
       })
       .then((response) => {
+        alert("성공적으로 올라갔습니다.");
+        window.location.reload(false);
         console.log(response && response.message);
       })
       .catch((error) => {
@@ -149,7 +155,7 @@ function Admin() {
         />
         <Input
           required
-          type="text"
+          type="number"
           value={info.generation}
           onChange={onChange}
           name="generation"
@@ -230,6 +236,7 @@ function Admin() {
             업로드
           </Button>
         </label>
+        <button onClick={setFormat}>형식 적용(먼저 누르고 제출!)</button>
         <button onClick={onSubmit}>제출</button>
       </div>
       <img src={thumbnail} style={{ width: "50vmax" }} alt="thumbnail" />

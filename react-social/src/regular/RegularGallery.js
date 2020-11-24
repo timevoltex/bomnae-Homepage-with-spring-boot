@@ -5,24 +5,38 @@ import SideMenu from "../common/SideMenu";
 import axios from "axios";
 import { ACCESS_TOKEN, API_BASE_URL } from "../constants";
 import Scaleup from "../common/Sacleup";
+import getItem from "../common/getItem";
 
 function RegularGallery() {
   const [item, setItem] = useState([]);
   const [generate, setGenerate] = useState(null);
   const [isScale, setIsScale] = useState(false);
+  const [detail, setDetail] = useState([]);
   const getImage = async () => {
-    try {
-      const response = await axios.get(
-        API_BASE_URL + "/api/v1/artwork/format/정기전",
-        {
-          headers: { Authorization: localStorage.getItem(ACCESS_TOKEN) },
+    getItem("정기전")
+      .then((response) => {
+        console.log(response);
+        const data = response;
+        setItem(data);
+        try {
+          data.map(async (image, i) => {
+            const detailResponse = await axios.get(
+              API_BASE_URL + `/api/v1/artwork/${image.id}`,
+              {
+                headers: { Authorization: localStorage.getItem(ACCESS_TOKEN) },
+              }
+            );
+            const detailData = detailResponse.data;
+            setDetail({ ...detail, detailData });
+            console.log(detail);
+          });
+        } catch (err) {
+          console.log(err);
         }
-      );
-      const data = response.data;
-      setItem(data);
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getGenItem = async (gen) => {
     if (gen !== null) {

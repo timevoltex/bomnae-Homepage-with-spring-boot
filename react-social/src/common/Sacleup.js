@@ -7,36 +7,60 @@ function Scaleup({ isScale, onScaleUp, data }) {
   const settings = {
     dots: false,
     infinite: true,
-    arrows: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     fade: true,
   };
   return (
-    <Container scale={isScale}>
+    <OverlayContainer scale={isScale}>
       <Background onClick={onScaleUp} />
-      <Content>
-        <Slider {...settings}>
-          {data.map((image, i) => {
-            return (
-              <div key={i}>
-                <img
-                  src={image.filePath}
-                  style={{ width: "50%", height: "50%" }}
-                />
-              </div>
-            );
-          })}
-        </Slider>
-      </Content>
-    </Container>
+      <ContentContainer>
+        <div style={{ position: "relative", width: "100%" }}>
+          <div
+            style={{
+              paddingBottom: "200%",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                width: "75%",
+                top: "16vmin",
+                left: "8vmax",
+                overflow: "hidden",
+              }}
+            >
+              <Slider {...settings}>
+                {data.map((image, i) => {
+                  return (
+                    <div key={i}>
+                      <div
+                        className="test"
+                        style={{ display: "flex", width: "max-content" }}
+                      >
+                        <img src={image.filePath} style={{ width: "50vmin" }} />
+                        <div
+                          style={{ width: "50vmin", backgroundColor: "white" }}
+                        >
+                          <p>상세정보</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </Slider>
+            </div>
+          </div>
+        </div>
+      </ContentContainer>
+    </OverlayContainer>
   );
 }
 
 export default Scaleup;
 
-const Container = styled.div.attrs((props) => ({
+const OverlayContainer = styled.div.attrs((props) => ({
   scale: props.scale || false,
 }))`
   position: fixed;
@@ -49,12 +73,13 @@ const Container = styled.div.attrs((props) => ({
 const Background = styled.div`
   width: 100%;
   height: 100%;
+  position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
 `;
 
-const Content = styled.div`
-  position: absolute;
-  top: 0;
-  width: 500px;
-  transform: translate(30vw, 50vh);
+const ContentContainer = styled.div`
+  overflow: hidden;
+  width: 100vmax;
+  max-width: 80vmax;
+  margin: 0 auto;
 `;
