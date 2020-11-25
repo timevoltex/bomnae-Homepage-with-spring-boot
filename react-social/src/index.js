@@ -3,16 +3,23 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./app/App";
 import registerServiceWorker from "./registerServiceWorker";
-// import Router from "react-router";
-// import ReactGA from "react-ga";
+import { Router, BrowserRouter } from "react-router-dom";
+import { createBrowserHistory as createHistory } from "history";
+import ReactGA from "react-ga";
 
-// ReactGA.initialize("UA-183822982-1");
+const history = createHistory();
+ReactGA.initialize("UA-183822982-1");
+history.listen((location, action) => {
+  ReactGA.pageview(window.location.pathname + window.location.search);
+});
 
-// function logPageView() {
-//   ReactGA.pageview(window.location.pathname);
-//   ReactGA.set({ page: window.location.pathname });
-// }
-
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Router history={history}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Router>,
+  document.getElementById("root")
+);
 
 registerServiceWorker();

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+// import { useHistory, useLocation } from "react-router";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../user/login/Login";
@@ -20,18 +28,10 @@ import FreshGallery from "../fresh/FreshGallery";
 import RegularGallery from "../regular/RegularGallery";
 import GraduateGallery from "../graduate/GraduateGallery";
 import GuestBook from "../guestbook/GuestBook";
-import { BrowserRouter, Router } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import GraduateContent from "../graduate/GraduateContent";
 import AdminRouter from "../admin/AdminRouter";
-import { createBrowserHistory as createHistory } from "history";
-import ReactGA from "react-ga";
 
-const history = createHistory();
-ReactGA.initialize("UA-183822982-1");
-history.listen((location, action) => {
-  ReactGA.pageview(window.location.pathname + window.location.search);
-});
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -73,6 +73,21 @@ function App() {
     Alert.success("로그아웃 되었습니다.");
   };
 
+  const query = useHistory();
+  const pLoaction = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(pLoaction.search);
+
+    if (queryParams.has("token")) {
+      queryParams.delete("token");
+      query.replace({
+        search: queryParams.toString(),
+      });
+    }
+    console.log(queryParams);
+  }, []);
+
   useEffect(() => {
     loadCurrentlyLoggedInUser();
     console.log(localStorage.getItem(ADMIN_TOKEN));
@@ -83,79 +98,75 @@ function App() {
     return <LoadingIndicator />;
   } else {
     return (
-      <BrowserRouter>
-        <Router history={history}>
-          <div className="app">
-            <Route
-              render={({ location }) => {
-                return (
-                  <div
-                    className="app-top-box"
-                    style={location.pathname === "/" ? { display: "none" } : {}}
-                  >
-                    <AppHeader
-                      authenticated={authenticated}
-                      path={location.pathname}
-                      onLogout={handleLogout}
-                      onAdminLogout={adminLogout}
-                    />
-                  </div>
-                );
-              }}
-            />
-            <Grid container className="app-body">
-              <Grid container item xs={12} className="app-content">
-                <Switch>
-                  <Route exact path="/" component={Main}></Route>
-                  <PrivateRoute
-                    path="/profile"
-                    authenticated={authenticated}
-                    currentUser={currentUser}
-                    component={Profile}
-                  ></PrivateRoute>
-                  <Route path="/home" component={Home}></Route>
-                  <Route
-                    path="/login"
-                    render={(props) => (
-                      <Login authenticated={authenticated} {...props} />
-                    )}
-                  ></Route>
-                  <Redirect path="/logout" to="/" />
-                  <Redirect path="/admin/signOut" to="/" />
-                  <Route
-                    path="/admin"
-                    render={({ location }) => (
-                      <AdminRouter isAdmin={isAdmin} location={location} />
-                    )}
-                  />
-                  <Route
-                    path="/signup"
-                    render={(props) => (
-                      <Signup authenticated={authenticated} {...props} />
-                    )}
-                  ></Route>
-                  <Route path="/fresh" component={FreshGallery}></Route>
-                  <Route path="/regular" render={() => <RegularGallery />} />
-                  <Route
-                    path="/graduate/:student"
-                    component={GraduateContent}
-                  ></Route>
-                  <Route path="/graduate" component={GraduateGallery} />
-                  <Route
-                    path="/guestbook"
-                    render={() => <GuestBook auth={authenticated} />}
-                  />
-                  <Route
-                    path="/oauth2/redirect"
-                    component={OAuth2RedirectHandler}
-                  ></Route>
-                  <Route component={NotFound}></Route>
-                </Switch>
-              </Grid>
-            </Grid>
-          </div>
-        </Router>
-      </BrowserRouter>
+      <div className="app">
+        <Route
+          render={({ location }) => {
+            return (
+              <div
+                className="app-top-box"
+                style={location.pathname === "/" ? { display: "none" } : {}}
+              >
+                <AppHeader
+                  authenticated={authenticated}
+                  path={location.pathname}
+                  onLogout={handleLogout}
+                  onAdminLogout={adminLogout}
+                />
+              </div>
+            );
+          }}
+        />
+        <Grid container className="app-body">
+          <Grid container item xs={12} className="app-content">
+            <Switch>
+              <Route exact path="/" component={Main}></Route>
+              <PrivateRoute
+                path="/profile"
+                authenticated={authenticated}
+                currentUser={currentUser}
+                component={Profile}
+              ></PrivateRoute>
+              <Route path="/home" component={Home}></Route>
+              <Route
+                path="/login"
+                render={(props) => (
+                  <Login authenticated={authenticated} {...props} />
+                )}
+              ></Route>
+              <Redirect path="/logout" to="/" />
+              <Redirect path="/admin/signOut" to="/" />
+              <Route
+                path="/admin"
+                render={({ location }) => (
+                  <AdminRouter isAdmin={isAdmin} location={location} />
+                )}
+              />
+              <Route
+                path="/signup"
+                render={(props) => (
+                  <Signup authenticated={authenticated} {...props} />
+                )}
+              ></Route>
+              <Route path="/fresh" component={FreshGallery}></Route>
+              <Route path="/regular" render={() => <RegularGallery />} />
+              <Route
+                path="/graduate/:student"
+                component={GraduateContent}
+              ></Route>
+              <Route path="/graduate" component={GraduateGallery} />
+              <Route
+                path="/guestbook"
+                render={() => <GuestBook auth={authenticated} />}
+              />
+              <Route
+                path="/oauth2/redirect"
+                component={OAuth2RedirectHandler}
+              ></Route>
+              <Route component={NotFound}></Route>
+            </Switch>
+          </Grid>
+        </Grid>
+      </div>
     );
   }
 }
