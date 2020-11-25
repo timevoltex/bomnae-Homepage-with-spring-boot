@@ -85,14 +85,12 @@ function LoginForm(props) {
 
     login(loginRequest)
       .then((response) => {
-        console.log(response.tokenType);
         localStorage.setItem(
           ACCESS_TOKEN,
           `${response.tokenType} ${response.accessToken}`
         );
         localStorage.setItem(ADMIN_TOKEN, true);
         Alert.success("You're successfully logged in!");
-        console.log(response.accessToken);
         props.history.push("/admin");
       })
       .catch((error) => {
