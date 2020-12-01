@@ -9,7 +9,7 @@ import {
 import { login } from "../../util/APIUtils";
 import { Redirect, withRouter } from "react-router-dom";
 import googleLogo from "../../img/google-logo.png";
-import githubLogo from "../../img/github-logo.png";
+import kakaoLogin from "../../img/kakao_login.png";
 import Alert from "react-s-alert";
 
 function Login(props) {
@@ -39,7 +39,7 @@ function Login(props) {
   return (
     <div className="login-container">
       <div className="login-content">
-        <h1 className="login-title">Login to SpringSocial</h1>
+        <h1 className="login-title">봄내 온라인 사진전 로그인 </h1>
         <SocialLogin />
         <div className="or-separator">
           <span className="or-text">OR</span>
@@ -56,8 +56,7 @@ function SocialLogin() {
       <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
         <img src={googleLogo} alt="Google" /> Log in with Google
       </a>
-      <a className="btn btn-block social-btn github" href={KAKAO_AUTH_URL}>
-        <img src={githubLogo} alt="kakao" /> Log in with Kakao
+      <a className="btn btn-block social-btn github" href={KAKAO_AUTH_URL} style={{backgroundImage: `url(${kakaoLogin})`}} >
       </a>
     </div>
   );

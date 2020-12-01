@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./AppHeader.css";
 import { ADMIN_TOKEN } from "../constants";
 
-function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
+function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }) {
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
   if (isAdmin === "true") {
     return (
@@ -86,8 +86,18 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
                   ) : (
                     <Fragment>
                       <li>
-                        <NavLink to="/profile">마이페이지</NavLink>
-                        {/* <NavLink to="/signup">Signup</NavLink> */}
+                        <div className="profile-avatar">
+                          {currentUser.imageUrl ? (
+                            <img src={currentUser.imageUrl} alt={currentUser.name} />
+                          ) : (
+                            <div className="text-avatar">
+                              <span>{currentUser.name && currentUser.name[0]}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="profile-name">
+                          <p>{currentUser.name}</p>
+                        </div>
                       </li>
                       <li>
                         <NavLink to="/logout" onClick={onLogout}>

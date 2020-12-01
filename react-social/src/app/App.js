@@ -110,6 +110,7 @@ function App() {
                   path={location.pathname}
                   onLogout={handleLogout}
                   onAdminLogout={adminLogout}
+                  currentUser={currentUser}
                 />
               </div>
             );
