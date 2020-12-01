@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
@@ -25,7 +24,7 @@ import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Main from "../main/Main";
 import FreshGallery from "../fresh/FreshGallery";
-import RegularGallery from "../regular/RegularGallery";
+import Gallery from "../regular/Gallery";
 import GraduateGallery from "../graduate/GraduateGallery";
 import GuestBook from "../guestbook/GuestBook";
 import { Grid } from "@material-ui/core";
@@ -147,13 +146,11 @@ function App() {
                   <Signup authenticated={authenticated} {...props} />
                 )}
               ></Route>
-              <Route path="/fresh" component={FreshGallery}></Route>
-              <Route path="/regular" render={() => <RegularGallery />} />
+              <Route path="/gallery" render={() => <Gallery />} />
               <Route
                 path="/graduate/:student"
                 component={GraduateContent}
               ></Route>
-              <Route path="/graduate" component={GraduateGallery} />
               <Route
                 path="/guestbook"
                 render={() => <GuestBook auth={authenticated} />}

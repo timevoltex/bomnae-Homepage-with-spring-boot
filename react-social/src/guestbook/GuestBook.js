@@ -117,7 +117,11 @@ function GuestBook({ auth }) {
           {comment.map((data, i) => (
             <div className={style.root} key={data.modifiedDate}>
               {data.user.imageUrl !== null ? (
-                <img className={style.profileImage} src={data.user.imageUrl} />
+                <img
+                  className={style.profileImage}
+                  src={data.user.imageUrl}
+                  alt="userProfile"
+                />
               ) : (
                 <Person className={style.profileImage} />
               )}

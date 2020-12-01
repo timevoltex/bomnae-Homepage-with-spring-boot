@@ -62,15 +62,18 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
                     <NavLink to="/home">인사말</NavLink>
                     {/* <NavLink to="/profile">Profile</NavLink> */}
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink to="/regular">정기전</NavLink>
-                  </li>
+                  </li> */}
                   <li>
+                    <NavLink to="/gallery">사진전</NavLink>
+                  </li>
+                  {/* <li>
                     <NavLink to="/fresh">신인전</NavLink>
                   </li>
                   <li>
                     <NavLink to="/graduate">졸업전</NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink to="/guestbook">방명록</NavLink>
                   </li>
