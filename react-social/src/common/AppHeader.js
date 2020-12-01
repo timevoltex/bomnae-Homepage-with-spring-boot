@@ -85,19 +85,14 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }
                     </Fragment>
                   ) : (
                     <Fragment>
-                      <li>
-                        <div className="profile-avatar">
+                      <li style={{display: "flex"}}>
                           {currentUser.imageUrl ? (
-                            <img src={currentUser.imageUrl} alt={currentUser.name} />
+                            currentUser.provider=="kakao" ? (<img class="kakao" src={currentUser.imageUrl} alt={currentUser.name} />):
+                            ( <img class="google" src={currentUser.imageUrl} alt={currentUser.name} />)
                           ) : (
-                            <div className="text-avatar">
                               <span>{currentUser.name && currentUser.name[0]}</span>
-                            </div>
                           )}
-                        </div>
-                        <div className="profile-name">
                           <p>{currentUser.name}</p>
-                        </div>
                       </li>
                       <li>
                         <NavLink to="/logout" onClick={onLogout}>
