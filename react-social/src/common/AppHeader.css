@@ -54,13 +54,13 @@
     justify-content: space-between;
 }
 
-.app-nav ul li img .kakao{
+.app-nav ul li img.kakao{
     width: 131px;
     border-radius: 50%;
     border: 7px solid #FEE500;
 }
 
-.app-nav ul li img .google{
+.app-nav ul li img.google{
     width: 131px;
     border-radius: 50%;
     border: 7px solid white;
