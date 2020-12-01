@@ -55,13 +55,13 @@
 }
 
 .app-nav ul li img.kakao{
-    width: 131px;
+    width: 60px;
     border-radius: 50%;
-    border: 7px solid #FEE500;
+    border: 4px solid#FEE500;
 }
 
 .app-nav ul li img.google{
-    width: 131px;
+    width: 60px;
     border-radius: 50%;
-    border: 7px solid white;
+    border: 4px solid white;
 }
