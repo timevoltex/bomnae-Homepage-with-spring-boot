@@ -55,13 +55,15 @@
 }
 
 .app-nav ul li img.kakao{
-    width: 60px;
+    width: 30px;
     border-radius: 50%;
-    border: 4px solid#FEE500;
+    border: 2px solid#FEE500;
+    vertical-align: text-bottom;
 }
 
 .app-nav ul li img.google{
-    width: 60px;
+    width: 30px;
     border-radius: 50%;
-    border: 4px solid white;
+    border: 2px solid white;
+    vertical-align: text-bottom;
 }
