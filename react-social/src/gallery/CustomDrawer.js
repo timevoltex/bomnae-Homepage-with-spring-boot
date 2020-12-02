@@ -32,7 +32,7 @@ function CustomDrawer(props) {
         aria-label="open drawer"
         onClick={handleDrawerOpen}
         edge="start"
-        className={(classes.menuButton, open && classes.hide)}
+        className={classes.menuButton}
       >
         <MenuIcon />
       </IconButton>
@@ -57,6 +57,19 @@ function CustomDrawer(props) {
         <Divider />
         {props.children}
       </Drawer>
+      <div
+        className={open ? "" : classes.hide}
+        onClick={handleDrawerClose}
+        style={{
+          backgroundColor: "transparent",
+          width: "100vw",
+          height: "100vh",
+          boxShadow: "0px 0px 0px 2000px inset rgba(0, 0, 0, 0.5)",
+          position: "absolute",
+          zIndex: 99,
+          top: 0,
+        }}
+      />
     </div>
   );
 }

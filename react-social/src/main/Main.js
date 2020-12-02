@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import Poster from "../img/poster.jpeg";
 import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
 function Main() {
   return (
@@ -13,11 +14,7 @@ function Main() {
           backgroundColor: "#313131",
         }}
       >
-        <img
-          src={Poster}
-          style={{ width: "50vw", height: "100vmax", margin: "0px auto" }}
-          alt="MainPage"
-        />
+        <PosterImage src={Poster} alt="MainPage" />
         <NavLink
           to="/home"
           style={{
@@ -37,3 +34,13 @@ function Main() {
   );
 }
 export default Main;
+
+const PosterImage = styled.img`
+  width: 50vw;
+  height: 100vh;
+  margin: 0 auto;
+  @media (max-width: 390px) {
+    width: 100vw;
+    margin: auto;
+  }
+`;

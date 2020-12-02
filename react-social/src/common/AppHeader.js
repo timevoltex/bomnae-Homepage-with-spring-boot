@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import "./AppHeader.css";
 import { ADMIN_TOKEN } from "../constants";
+import Icon from "../img/bomnaeIcon.jpeg";
 import styled from "styled-components";
 
 function AppHeader({
@@ -11,6 +12,7 @@ function AppHeader({
   onAdminLogout,
   currentUser,
 }) {
+  const mobile = window.innerWidth;
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
   if (isAdmin === "true") {
     return (
@@ -58,9 +60,18 @@ function AppHeader({
         <HeaderContainer className="app-header">
           <div className="container">
             <div className="app-branding">
-              <NavLink to="/" className="app-title">
-                봄내 온라인 사진전
-              </NavLink>
+              {mobile > 390 ? (
+                <NavLink to="/" className="app-title">
+                  봄내 온라인 사진전
+                </NavLink>
+              ) : (
+                <NavLink to="/" className="app-title-mobile">
+                  <img
+                    src={Icon}
+                    style={{ width: 50, height: 50, textAlign: "center" }}
+                  />
+                </NavLink>
+              )}
             </div>
             <div className="app-options">
               <nav className="app-nav">

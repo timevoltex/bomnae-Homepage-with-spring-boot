@@ -16,8 +16,6 @@ function GalleryContent({ category, isDone, setDone }) {
   const meta = [];
   const [detail, setDetail] = useState([]);
 
-  const mobile = window.innerWidth;
-
   const getImage = async () => {
     if (!isDone) {
       getItem(category.format, category.subject)
@@ -136,7 +134,7 @@ function GalleryContent({ category, isDone, setDone }) {
             {detail.map((image, i) => {
               console.log(i);
               return (
-                <div key={i}>
+                <div key={i} className="swing-chip">
                   <SliderContainer className="test">
                     <img src={image.filepath || ""} alt="content" />
                     <ContentDescription>
@@ -197,9 +195,10 @@ const ContentContainer = styled.div`
     display: block;
     .slick-slider.scale {
       width: 100vw;
+      margin-top: 10px;
     }
     .slick-slider.list {
-      position: absolute;
+      position: unset;
       width: 90vw;
       margin: auto;
     }
