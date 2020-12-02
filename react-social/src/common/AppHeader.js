@@ -2,8 +2,15 @@ import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import "./AppHeader.css";
 import { ADMIN_TOKEN } from "../constants";
+import styled from "styled-components";
 
-function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }) {
+function AppHeader({
+  path,
+  authenticated,
+  onLogout,
+  onAdminLogout,
+  currentUser,
+}) {
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
   if (isAdmin === "true") {
     return (
@@ -48,7 +55,7 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }
       );
     } else {
       return (
-        <header className="app-header">
+        <HeaderContainer className="app-header">
           <div className="container">
             <div className="app-branding">
               <NavLink to="/" className="app-title">
@@ -60,20 +67,10 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }
                 <ul>
                   <li>
                     <NavLink to="/home">인사말</NavLink>
-                    {/* <NavLink to="/profile">Profile</NavLink> */}
                   </li>
-                  {/* <li>
-                    <NavLink to="/regular">정기전</NavLink>
-                  </li> */}
                   <li>
                     <NavLink to="/gallery">사진전</NavLink>
                   </li>
-                  {/* <li>
-                    <NavLink to="/fresh">신인전</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/graduate">졸업전</NavLink>
-                  </li> */}
                   <li>
                     <NavLink to="/guestbook">방명록</NavLink>
                   </li>
@@ -86,13 +83,24 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }
                   ) : (
                     <Fragment>
                       <li>
-                          {currentUser.imageUrl ? (
-                            currentUser.provider=="kakao" ? (<img class="kakao" src={currentUser.imageUrl} alt={currentUser.name} />):
-                            ( <img class="google" src={currentUser.imageUrl} alt={currentUser.name} />)
+                        {currentUser.imageUrl ? (
+                          currentUser.provider == "kakao" ? (
+                            <img
+                              class="kakao"
+                              src={currentUser.imageUrl}
+                              alt={currentUser.name}
+                            />
                           ) : (
-                              <span>{currentUser.name && currentUser.name[0]}</span>
-                          )}
-                          <span>    {currentUser.name}</span>
+                            <img
+                              class="google"
+                              src={currentUser.imageUrl}
+                              alt={currentUser.name}
+                            />
+                          )
+                        ) : (
+                          <span>{currentUser.name && currentUser.name[0]}</span>
+                        )}
+                        <span> {currentUser.name}</span>
                       </li>
                       <li>
                         <NavLink to="/logout" onClick={onLogout}>
@@ -105,10 +113,23 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout, currentUser }
               </nav>
             </div>
           </div>
-        </header>
+        </HeaderContainer>
       );
     }
   }
 }
 
 export default AppHeader;
+
+const HeaderContainer = styled.header`
+  @media only screen and (max-width: 460px) {
+    height: auto;
+    .app-branding,
+    .app-options {
+      float: unset;
+    }
+    .app-nav {
+      text-align: center;
+    }
+  }
+`;

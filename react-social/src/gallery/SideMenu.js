@@ -8,6 +8,7 @@ import {
   Collapse,
 } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import styled from "styled-components";
 
 function SideMenu({ changeFormat }) {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ function SideMenu({ changeFormat }) {
     setIsFresh(!isFresh);
   };
   return (
-    <List
+    <SideContainer
       component="nav"
       aria-label="regular-list-subheader"
       subheader={
@@ -181,8 +182,29 @@ function SideMenu({ changeFormat }) {
       <ListItem button>
         <ListItemText primary="졸업전" />
       </ListItem>
-    </List>
+    </SideContainer>
   );
 }
 
 export default SideMenu;
+
+const SideContainer = styled(List)`
+  @media only screen and (max-width: 460px) {
+    .MuiListItem-gutters,
+    .MuiListSubheader-gutters {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .MuiListSubheader-root {
+      font-size: 0.5em;
+    }
+    .MuiTypography-body1,
+    .MuiListItemText-root {
+      font-size: 0.8rem;
+    }
+    .MuiSvgIcon-root {
+      width: 0.5em;
+      height: 0.5em;
+    }
+  }
+`;

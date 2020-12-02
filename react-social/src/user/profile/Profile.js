@@ -5,6 +5,7 @@ import { ADMIN_TOKEN } from "../../constants";
 
 function Profile({ currentUser }) {
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
+  console.log(currentUser.provider);
   return (
     <div className="profile-container">
       <div className="container">

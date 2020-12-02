@@ -4,25 +4,25 @@ import Slider from "react-slick";
 import { getItem } from "./getItem";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 import axios from "axios";
+import LoadingIndicator from "./LoadingIndicator";
 
-function GalleryContent({ category, isDone }) {
+function GalleryContent({ category, isDone, setDone }) {
   const scaleUp = useRef(document.createElement("div"));
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [navIndex, setNavIndex] = useState(0);
   let scaleSlider = [];
   let listSlider = [];
-
-  const [item, setItem] = useState([]);
   const meta = [];
   const [detail, setDetail] = useState([]);
+
+  const mobile = window.innerWidth;
 
   const getImage = async () => {
     if (!isDone) {
       getItem(category.format, category.subject)
         .then((response) => {
           const data = response;
-          setItem(data);
           try {
             data.map(async (image, i) => {
               const detailResponse = await axios.get(
@@ -34,9 +34,11 @@ function GalleryContent({ category, isDone }) {
                 }
               );
               meta.push(detailResponse.data);
+              if (i === data.length - 1) {
+                setDetail(meta);
+                setDone(true);
+              }
             });
-            setDetail(meta);
-            isDone = true;
           } catch (err) {
             console.log(err);
           }
@@ -46,10 +48,6 @@ function GalleryContent({ category, isDone }) {
         });
     }
   };
-
-  useEffect(() => {
-    getImage();
-  }, [category]);
 
   const settings = {
     dots: false,
@@ -70,6 +68,19 @@ function GalleryContent({ category, isDone }) {
     speed: 500,
     infinite: true,
     dots: false,
+    centerPadding: "60px",
+    centerMode: true,
+    vertical: true,
+    verticalSwiping: true,
+    responseive: [
+      {
+        breakpoint: 400,
+        settings: {
+          vertical: false,
+          verticalSwiping: false,
+        },
+      },
+    ],
     beforeChange: (_, next) => {
       setNavIndex(next);
     },
@@ -84,54 +95,65 @@ function GalleryContent({ category, isDone }) {
     setNav2(listSlider);
   }, [scaleSlider, listSlider]);
 
-  return (
-    <Fragment>
-      <ContentContainer className="photo_contents" ref={scaleUp}>
-        <Slider
-          asNavFor={nav2}
-          ref={(slider1) => (scaleSlider = slider1)}
-          {...settings}
-        >
-          {detail.map((image, i) => {
-            return (
-              <div key={i}>
-                <SliderContainer className="test">
-                  <img src={image.filepath} alt="content" />
-                  <ContentDescription>
-                    <p>상세정보</p>
-                    <p>제목: {image.title}</p>
-                    <p>설명: {image.content}</p>
-                    <p>작가: {image.artist}</p>
-                  </ContentDescription>
-                </SliderContainer>
-              </div>
-            );
-          })}
-        </Slider>
-        <Slider
-          asNavFor={nav1}
-          ref={(slider2) => (listSlider = slider2)}
-          {...listSettings}
-          className="list-slider"
-        >
-          {item.map((src, i) => {
-            return (
-              <div key={src.filePath}>
-                <Image
-                  style={{
-                    backgroundImage: `url("${src.filePath}")`,
-                  }}
-                  onClick={() => goTo(i)}
-                >
-                  {/* <img style={{width:}} src={src.filePath} alt="content" onClick={onClick} /> */}
-                </Image>
-              </div>
-            );
-          })}
-        </Slider>
-      </ContentContainer>
-    </Fragment>
-  );
+  useEffect(() => {
+    getImage();
+  }, [category]);
+
+  if (!isDone) {
+    return <LoadingIndicator />;
+  } else {
+    console.log(detail);
+    return (
+      <Fragment>
+        <ContentContainer className="photo_contents" ref={scaleUp}>
+          <Slider
+            asNavFor={nav1}
+            ref={(slider2) => (listSlider = slider2)}
+            {...listSettings}
+            className="list"
+          >
+            {detail.map((src, i) => {
+              return (
+                <div key={src.filePath + src.id}>
+                  <Image
+                    style={{
+                      backgroundImage: `url("${src.filepath}")`,
+                    }}
+                    onClick={() => goTo(i)}
+                  >
+                    {/* <img style={{width:}} src={src.filePath} alt="content" onClick={onClick} /> */}
+                  </Image>
+                </div>
+              );
+            })}
+          </Slider>
+          <Slider
+            asNavFor={nav2}
+            ref={(slider1) => (scaleSlider = slider1)}
+            {...settings}
+            className="scale"
+          >
+            {detail.map((image, i) => {
+              console.log(i);
+              return (
+                <div key={i}>
+                  <SliderContainer className="test">
+                    <img src={image.filepath || ""} alt="content" />
+                    <ContentDescription>
+                      <p>상세정보</p>
+                      <p>제목: {image.title}</p>
+                      <p>설명: {image.content}</p>
+                      <p>작가: {image.artist}</p>
+                    </ContentDescription>
+                  </SliderContainer>
+                </div>
+              );
+            })}
+          </Slider>
+        </ContentContainer>
+      </Fragment>
+    );
+  }
 }
 
 export default GalleryContent;
@@ -140,10 +162,19 @@ export default GalleryContent;
 // flex-wrap: wrap;
 // align-items: flex-start;
 const ContentContainer = styled.div`
-  .slick-slider {
-    width: 70vw;
+  display: flex;
+  .slick-slider.scale {
+    width: 70vmax;
   }
-  .slick-track {
+  .slick-slider.list {
+    position: absolute;
+    width: 10vw;
+    right: 0;
+    :hover {
+      width: 20vw;
+    }
+  }
+  .scale .slick-track {
     display: flex;
   }
   .slick-track .slick-slide {
@@ -152,24 +183,33 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
   }
+  .scale .slick-slide {
+    height: 80vh;
+  }
   .slick-next {
     right: 0;
   }
   .slick-prev {
     left: 0;
   }
+  @media only screen and (max-width: 390px) {
+    width: 100%;
+    .slick-slider.scale {
+      width: 40vmax;
+    }
+  }
 `;
 
 const Image = styled.div`
-  width: 27vw;
-  height: 27vw;
+  width: 16vw;
+  height: 16vw;
   background-size: cover;
   background-position: center;
 `;
 const SliderContainer = styled.div`
   display: flex;
   width: max-content;
-  margin: 13vmin auto;
+  margin: 8vmin auto;
 
   img {
     width: 50vmin;
@@ -179,4 +219,7 @@ const SliderContainer = styled.div`
 const ContentDescription = styled.div`
   width: 50vmin;
   background-color: white;
+  @media (max-width: 390px) {
+    width: 20vmin;
+  }
 `;
