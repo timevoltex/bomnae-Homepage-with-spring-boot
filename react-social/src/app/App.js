@@ -23,13 +23,13 @@ import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Main from "../main/Main";
-import FreshGallery from "../fresh/FreshGallery";
-import Gallery from "../regular/Gallery";
-import GraduateGallery from "../graduate/GraduateGallery";
+import Gallery from "../gallery/Gallery";
 import GuestBook from "../guestbook/GuestBook";
 import { Grid } from "@material-ui/core";
 import GraduateContent from "../graduate/GraduateContent";
 import AdminRouter from "../admin/AdminRouter";
+import { ThemeProvider } from "styled-components";
+import theme from "../theme";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -89,81 +89,81 @@ function App() {
 
   useEffect(() => {
     loadCurrentlyLoggedInUser();
-    console.log(localStorage.getItem(ADMIN_TOKEN));
-    console.log(authenticated + `관리자? ${isAdmin}`);
   }, [authenticated]);
 
   if (loading) {
     return <LoadingIndicator />;
   } else {
     return (
-      <div className="app">
-        <Route
-          render={({ location }) => {
-            return (
-              <div
-                className="app-top-box"
-                style={location.pathname === "/" ? { display: "none" } : {}}
-              >
-                <AppHeader
+      <ThemeProvider theme={theme}>
+        <div className="app">
+          <Route
+            render={({ location }) => {
+              return (
+                <div
+                  className="app-top-box"
+                  style={location.pathname === "/" ? { display: "none" } : {}}
+                >
+                  <AppHeader
+                    authenticated={authenticated}
+                    path={location.pathname}
+                    onLogout={handleLogout}
+                    onAdminLogout={adminLogout}
+                  />
+                </div>
+              );
+            }}
+          />
+          <Grid container className="app-body">
+            <Grid container item xs={12} className="app-content">
+              <Switch>
+                <Route exact path="/" component={Main}></Route>
+                <PrivateRoute
+                  path="/profile"
                   authenticated={authenticated}
-                  path={location.pathname}
-                  onLogout={handleLogout}
-                  onAdminLogout={adminLogout}
+                  currentUser={currentUser}
+                  component={Profile}
+                ></PrivateRoute>
+                <Route path="/home" component={Home}></Route>
+                <Route
+                  path="/login"
+                  render={(props) => (
+                    <Login authenticated={authenticated} {...props} />
+                  )}
+                ></Route>
+                <Redirect path="/logout" to="/" />
+                <Redirect path="/admin/signOut" to="/" />
+                <Route
+                  path="/admin"
+                  render={({ location }) => (
+                    <AdminRouter isAdmin={isAdmin} location={location} />
+                  )}
                 />
-              </div>
-            );
-          }}
-        />
-        <Grid container className="app-body">
-          <Grid container item xs={12} className="app-content">
-            <Switch>
-              <Route exact path="/" component={Main}></Route>
-              <PrivateRoute
-                path="/profile"
-                authenticated={authenticated}
-                currentUser={currentUser}
-                component={Profile}
-              ></PrivateRoute>
-              <Route path="/home" component={Home}></Route>
-              <Route
-                path="/login"
-                render={(props) => (
-                  <Login authenticated={authenticated} {...props} />
-                )}
-              ></Route>
-              <Redirect path="/logout" to="/" />
-              <Redirect path="/admin/signOut" to="/" />
-              <Route
-                path="/admin"
-                render={({ location }) => (
-                  <AdminRouter isAdmin={isAdmin} location={location} />
-                )}
-              />
-              <Route
-                path="/signup"
-                render={(props) => (
-                  <Signup authenticated={authenticated} {...props} />
-                )}
-              ></Route>
-              <Route path="/gallery" render={() => <Gallery />} />
-              <Route
-                path="/graduate/:student"
-                component={GraduateContent}
-              ></Route>
-              <Route
-                path="/guestbook"
-                render={() => <GuestBook auth={authenticated} />}
-              />
-              <Route
-                path="/oauth2/redirect"
-                component={OAuth2RedirectHandler}
-              ></Route>
-              <Route component={NotFound}></Route>
-            </Switch>
+                <Route
+                  path="/signup"
+                  render={(props) => (
+                    <Signup authenticated={authenticated} {...props} />
+                  )}
+                ></Route>
+                <Route path="/gallery" render={() => <Gallery />} />
+                <Route
+                  path="/graduate/:student"
+                  component={GraduateContent}
+                ></Route>
+                <Route
+                  path="/guestbook"
+                  render={() => <GuestBook auth={authenticated} />}
+                />
+                <Route
+                  path="/oauth2/redirect"
+                  component={OAuth2RedirectHandler}
+                ></Route>
+                <Route component={NotFound}></Route>
+              </Switch>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </div>
+      </ThemeProvider>
     );
   }
 }
