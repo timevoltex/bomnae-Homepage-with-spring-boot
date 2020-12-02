@@ -26,6 +26,7 @@ import GuestBook from "../guestbook/GuestBook";
 import { Grid } from "@material-ui/core";
 import GraduateContent from "../graduate/GraduateContent";
 import AdminRouter from "../admin/AdminRouter";
+import ReactGA from "react-ga";
 import { ThemeProvider } from "styled-components";
 import theme from "../theme";
 
@@ -75,7 +76,6 @@ function App() {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(pLoaction.search);
-
     if (queryParams.has("token")) {
       queryParams.delete("token");
       query.replace({
@@ -88,6 +88,12 @@ function App() {
   useEffect(() => {
     loadCurrentlyLoggedInUser();
   }, [authenticated]);
+
+  useEffect(() => {
+    ReactGA.initialize("UA-183822982-1")
+    ReactGA.pageview(window.location.pathname+window.location.search)
+    console.log(window.location.pathname)
+  });
 
   if (loading) {
     return <LoadingIndicator />;
