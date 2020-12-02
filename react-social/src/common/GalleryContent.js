@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import { getItem } from "./getItem";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 import axios from "axios";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import LoadingIndicator from "./LoadingIndicator";
 
 function GalleryContent({ category, isDone, setDone }) {
@@ -24,6 +25,16 @@ function GalleryContent({ category, isDone, setDone }) {
     slidesToScroll: 1,
     fade: true,
     adaptiveHeight: true,
+    nextArrow: <KeyboardArrowRight />,
+    prevArrow: <KeyboardArrowLeft />,
+    responsive: [
+      {
+        breakpoint: 450,
+        settings: {
+          arrows: false,
+        },
+      },
+    ],
     beforeChange: (_, next) => {
       setNavIndex(next);
     },
@@ -41,7 +52,7 @@ function GalleryContent({ category, isDone, setDone }) {
     verticalSwiping: true,
     responsive: [
       {
-        breakpoint: 400,
+        breakpoint: 450,
         settings: {
           vertical: false,
           verticalSwiping: false,
@@ -152,7 +163,13 @@ function GalleryContent({ category, isDone, setDone }) {
                       <ContentDescription>
                         <p>상세정보</p>
                         <p>제목: {image.title}</p>
+                        <p>기수: {image.artist}</p>
+                        <p>작가: {image.artist}</p>
                         <p>설명: {image.content}</p>
+                        <p>작가: {image.artist}</p>
+                        <p>작가: {image.artist}</p>
+                        <p>작가: {image.artist}</p>
+                        <p>작가: {image.artist}</p>
                         <p>작가: {image.artist}</p>
                       </ContentDescription>
                     </SliderContainer>
@@ -174,13 +191,19 @@ export default GalleryContent;
 // align-items: flex-start;
 const ContentContainer = styled.div`
   display: flex;
+  height: 90vh;
+  width: 60vw;
   .slick-slider.scale {
     width: 70vmax;
+    align-self: center;
   }
   .slick-slider.list {
     position: absolute;
     width: 10vw;
     right: 0;
+    .slick-list {
+      height: 70vmin;
+    }
   }
   .scale .slick-track {
     display: flex;
@@ -196,14 +219,30 @@ const ContentContainer = styled.div`
   }
   .slick-next {
     right: 0;
+    color: black;
+    z-index: 99;
   }
   .slick-prev {
     left: 0;
+    color: black;
+    z-index: 99;
   }
+
   @media only screen and (min-width: 451px) {
     .slick-slider.list {
       :hover {
         width: 20vw;
+      }
+    }
+  }
+  @media only screen and (max-width: 1150px) {
+    .slick-slider.scale {
+      margin-top: 45vmin;
+      height: 100%;
+      min-width: 480px;
+      .slick-list {
+        overflow: visible;
+        width: 100vw;
       }
     }
   }
@@ -213,16 +252,22 @@ const ContentContainer = styled.div`
     .slick-slider.scale {
       width: 100vw;
       margin-top: 10px;
-      overflow: hidden;
-      height: 100%;
+      min-width: unset;
+      .slick-list {
+        overflow: hidden;
+      }
     }
-    .scale .slick-list {
-      overflow: visible;
+    .scale .slick-slide {
+      height: auto;
     }
+
     .slick-slider.list {
       position: unset;
       width: 90vw;
       margin: auto;
+      .slick-list {
+        height: auto;
+      }
     }
   }
 `;
@@ -238,14 +283,21 @@ const SliderContainer = styled.div`
   display: flex;
   width: max-content;
   margin: 8vmin auto;
+  border: 1px solid black;
 
   img {
     width: 50vmin;
   }
+  @media (max-width: 1150px) {
+    display: block;
+    img {
+      width: 52vmin;
+    }
+  }
   @media (max-width: 450px) {
     display: block;
     img {
-      width: 80vmin;
+      width: 83vmin;
     }
   }
 `;
@@ -253,6 +305,8 @@ const SliderContainer = styled.div`
 const ContentDescription = styled.div`
   width: 50vmin;
   background-color: white;
+  margin-left: 10px;
+
   @media (max-width: 450px) {
     width: 80vmin;
   }
