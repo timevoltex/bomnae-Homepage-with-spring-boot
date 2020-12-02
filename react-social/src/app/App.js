@@ -10,8 +10,6 @@ import {
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../user/login/Login";
-import Signup from "../user/signup/Signup";
-import Profile from "../user/profile/Profile";
 import OAuth2RedirectHandler from "../user/oauth2/OAuth2RedirectHandler";
 import NotFound from "../common/NotFound";
 import LoadingIndicator from "../common/LoadingIndicator";
@@ -109,6 +107,7 @@ function App() {
                     path={location.pathname}
                     onLogout={handleLogout}
                     onAdminLogout={adminLogout}
+                    currentUser={currentUser}
                   />
                 </div>
               );
@@ -118,16 +117,15 @@ function App() {
             <Grid container item xs={12} className="app-content">
               <Switch>
                 <Route exact path="/" component={Main}></Route>
-                <Route path="/home" component={Home}></Route>
--                <Route
--                  path="/login"
--                  render={(props) => (
--                    <Login authenticated={authenticated} {...props} />
--                  )}
--                ></Route>
-
-<Redirect path="/logout" to="/" />
-<Route
+                <Route path="/home" component={Home}></Route>-{" "}
+                <Route
+                  path="/login"
+                  render={(props) => (
+                    <Login authenticated={authenticated} {...props} />
+                  )}
+                ></Route>
+                <Redirect path="/logout" to="/" />
+                <Route
                   path="/admin"
                   render={({ location }) => (
                     <AdminRouter isAdmin={isAdmin} location={location} />
