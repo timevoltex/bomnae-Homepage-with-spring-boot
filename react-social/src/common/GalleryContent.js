@@ -70,14 +70,16 @@ function GalleryContent({ category, isDone, setDone }) {
 
   // 가로사진 세로사진 구분
   function onImgLoad({ target: img }) {
-    const width = img.offsetWidth;
-    const height = img.offsetHeight;
+    const width = img.naturalWidth;
+    const height = img.naturalHeight;
     let ratio = width / height;
     img.className = ratio > 1 ? "landscape" : "portrait";
     if (ratio > 1) {
       img.parentElement.style.display = "block";
+      img.parentElement.style.marginTop = "36vmin";
       img.style.width = "70vmin";
     }
+    console.log(ratio);
   }
 
   // useEffect(() => {
@@ -168,7 +170,6 @@ function GalleryContent({ category, isDone, setDone }) {
               className="scale"
             >
               {detail.map((image, i) => {
-                console.log(image);
                 return (
                   <div key={i} className="swing-chip">
                     <SliderContainer className="test">
@@ -182,7 +183,24 @@ function GalleryContent({ category, isDone, setDone }) {
                         <p>제목: {image.title}</p>
                         <p>기수: {image.artist}</p>
                         <p>작가: {image.artist}</p>
-                        <p>설명: {image.content}</p>
+                        <p>
+                          설명: Lorem ipsum dolor sit amet, consectetur
+                          adipiscing elit. Nam maximus congue turpis at maximus.
+                          Pellentesque vitae hendrerit tortor. Nunc rutrum
+                          commodo quam, et bibendum nunc. Aliquam vel congue
+                          nibh. Nulla viverra nunc elit, fringilla faucibus
+                          lorem scelerisque id. Mauris venenatis metus lorem,
+                          non aliquam ligula iaculis dignissim. Nulla facilisi.
+                          Proin malesuada ligula vitae lectus feugiat rutrum.
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Nam maximus congue turpis at maximus.
+                          Pellentesque vitae hendrerit tortor. Nunc rutrum
+                          commodo quam, et bibendum nunc. Aliquam vel congue
+                          nibh. Nulla viverra nunc elit, fringilla faucibus
+                          lorem scelerisque id. Mauris venenatis metus lorem,
+                          non aliquam ligula iaculis dignissim. Nulla facilisi.
+                          Proin malesuada ligula vitae lectus feugiat rutrum.
+                        </p>
                       </ContentDescription>
                     </SliderContainer>
                   </div>
@@ -238,6 +256,9 @@ const ContentContainer = styled.div`
     left: 0;
     color: black;
     z-index: 99;
+  }
+  .scale .slick-list {
+    overflow: visible;
   }
 
   @media only screen and (min-width: 451px) {
