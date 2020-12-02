@@ -21,7 +21,7 @@ function Gallery() {
   const mobile = window.innerWidth;
   return (
     <Grid container>
-      <Grid item xs={mobile > 390 ? 2 : 0}>
+      <Grid item xs={mobile > 390 ? 2 : false}>
         {mobile > 390 ? (
           <SideMenu changeFormat={changeFormat} />
         ) : (

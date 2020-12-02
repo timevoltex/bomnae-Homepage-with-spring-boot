@@ -72,7 +72,7 @@ function GalleryContent({ category, isDone, setDone }) {
     centerMode: true,
     vertical: true,
     verticalSwiping: true,
-    responseive: [
+    responsive: [
       {
         breakpoint: 400,
         settings: {
@@ -194,8 +194,14 @@ const ContentContainer = styled.div`
   }
   @media only screen and (max-width: 390px) {
     width: 100%;
+    display: block;
     .slick-slider.scale {
-      width: 40vmax;
+      width: 100vw;
+    }
+    .slick-slider.list {
+      position: absolute;
+      width: 90vw;
+      margin: auto;
     }
   }
 `;
@@ -206,6 +212,7 @@ const Image = styled.div`
   background-size: cover;
   background-position: center;
 `;
+
 const SliderContainer = styled.div`
   display: flex;
   width: max-content;
@@ -214,12 +221,18 @@ const SliderContainer = styled.div`
   img {
     width: 50vmin;
   }
+  @media (max-width: 390px) {
+    display: block;
+    img {
+      width: 80vmin;
+    }
+  }
 `;
 
 const ContentDescription = styled.div`
   width: 50vmin;
   background-color: white;
   @media (max-width: 390px) {
-    width: 20vmin;
+    width: 80vmin;
   }
 `;
