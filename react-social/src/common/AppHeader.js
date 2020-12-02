@@ -57,7 +57,10 @@ function AppHeader({
       );
     } else {
       return (
-        <HeaderContainer className="app-header">
+        <HeaderContainer
+          sign={authenticated ? true : false}
+          className="app-header"
+        >
           <div className="container">
             <div className="app-branding">
               {mobile > 450 ? (
@@ -69,6 +72,7 @@ function AppHeader({
                   <img
                     src={Icon}
                     style={{ width: 50, height: 50, textAlign: "center" }}
+                    alt="profileImage"
                   />
                 </NavLink>
               )}
@@ -95,7 +99,7 @@ function AppHeader({
                     <Fragment>
                       <li>
                         {currentUser.imageUrl ? (
-                          currentUser.provider == "kakao" ? (
+                          currentUser.provider === "kakao" ? (
                             <img
                               class="kakao"
                               src={currentUser.imageUrl}
@@ -143,5 +147,9 @@ const HeaderContainer = styled.header`
       text-align: center;
       margin-top: 10px;
     }
+  }
+  li {
+    padding-left: ${(props) => (props.sign ? "8px" : "15px")};
+    padding-right: ${(props) => (props.sign ? "8px" : "15px")};
   }
 `;

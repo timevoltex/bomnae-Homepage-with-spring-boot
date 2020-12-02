@@ -15,7 +15,6 @@ import NotFound from "../common/NotFound";
 import LoadingIndicator from "../common/LoadingIndicator";
 import { getCurrentUser, getAdmin } from "../util/APIUtils";
 import { ACCESS_TOKEN, ADMIN_TOKEN } from "../constants";
-import PrivateRoute from "../common/PrivateRoute";
 import Alert from "react-s-alert";
 import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";

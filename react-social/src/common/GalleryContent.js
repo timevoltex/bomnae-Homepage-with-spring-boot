@@ -16,7 +16,6 @@ function GalleryContent({ category, isDone, setDone }) {
   let listSlider = [];
   const meta = [];
   const [detail, setDetail] = useState([]);
-  const a = 1;
   const settings = {
     dots: false,
     infinite: false,
@@ -166,11 +165,6 @@ function GalleryContent({ category, isDone, setDone }) {
                         <p>기수: {image.artist}</p>
                         <p>작가: {image.artist}</p>
                         <p>설명: {image.content}</p>
-                        <p>작가: {image.artist}</p>
-                        <p>작가: {image.artist}</p>
-                        <p>작가: {image.artist}</p>
-                        <p>작가: {image.artist}</p>
-                        <p>작가: {image.artist}</p>
                       </ContentDescription>
                     </SliderContainer>
                   </div>

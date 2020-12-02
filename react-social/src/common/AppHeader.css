@@ -1,69 +1,67 @@
 .app-header {
-    height: 60px;
-    position: relative;
-    z-index: 10;
+  height: 60px;
+  position: relative;
+  z-index: 10;
 }
 
 .app-title {
-    line-height: 60px;
-    vertical-align: middle;
-    font-size: 1.35em;
+  line-height: 60px;
+  vertical-align: middle;
+  font-size: 1.35em;
 }
 
 .app-branding {
-    float: left;
+  float: left;
 }
 
 .app-options {
-    float: right;
+  float: right;
 }
 
 .app-nav ul {
-    list-style-position: none;
-    margin: 0;
-    padding: 0;
+  list-style-position: none;
+  margin: 0;
+  padding: 0;
 }
 
 .app-nav ul li {
-    list-style-type: none;
-    display: inline-block;
-    line-height: 60px;
-    vertical-align: middle;
-    padding-left: 15px;
-    padding-right: 15px;
-    color: rgba(0,0,0,0.65);
-}
-.app-nav ul li a{
-    color: rgba(0,0,0,0.65);
+  list-style-type: none;
+  display: inline-block;
+  line-height: 60px;
+  vertical-align: middle;
 
+  color: rgba(0, 0, 0, 0.65);
+}
+.app-nav ul li a {
+  color: rgba(0, 0, 0, 0.65);
 }
 
 .app-nav ul li a:hover {
-    color: #0f96f6;
+  color: #0f96f6;
 }
 
 .app-nav ul li a.active {
-    color: #0f96f6;
+  color: #0f96f6;
 }
 
-.main{
-    align-items: center;
-    height:100%;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
+.main {
+  align-items: center;
+  height: 100%;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
-.app-nav ul li img.kakao{
-    width: 30px;
-    border-radius: 50%;
-    border: 2px solid#FEE500;
-    vertical-align: text-bottom;
+.app-nav ul li img.kakao {
+  width: 30px;
+  border-radius: 50%;
+  border: 2px solid#FEE500;
+  vertical-align: text-bottom;
 }
 
-.app-nav ul li img.google{
-    width: 30px;
-    border-radius: 50%;
-    border: 2px solid white;
-    vertical-align: text-bottom;
+.app-nav ul li img.google {
+  width: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+  vertical-align: text-bottom;
 }

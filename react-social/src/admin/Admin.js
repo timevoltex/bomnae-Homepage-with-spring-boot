@@ -8,7 +8,7 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core";
-import { API_BASE_URL, ACCESS_TOKEN, DEVELOPMENT_URL } from "../constants";
+import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 function Admin() {
   const [thumbnail, setThumbnail] = useState("");
   const [fresh, isFresh] = useState(false);

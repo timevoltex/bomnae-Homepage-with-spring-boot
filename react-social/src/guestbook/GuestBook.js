@@ -1,15 +1,6 @@
 import React, { useState, Fragment, useEffect, useRef } from "react";
-import {
-  TextField,
-  Divider,
-  IconButton,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@material-ui/core";
-import { Directions, ExpandMore, Person } from "@material-ui/icons";
-import moment from "moment";
-import { url } from "../common/value";
+import { TextField, Divider, IconButton } from "@material-ui/core";
+import { Directions, Person } from "@material-ui/icons";
 import axios from "axios";
 import { GUESTBOOK_URL, ACCESS_TOKEN, API_BASE_URL } from "../constants";
 import LoadingIndicator from "../common/LoadingIndicator";
@@ -17,7 +8,6 @@ import styled from "styled-components";
 
 function GuestBook({ auth }) {
   // const [comment, setComment] = useState([{time:"2020.09.28",content:[{id:'text', comment:"메롱"}, {id:'tes1t', comment:'라리룰라'}] }, {time:"2020.09.30", content:[{id:'test', comment:'ㅇㄹㅇㄹㅇ'}]}, {time:"2020.10.01", content:[{id:'test', comment:'ㄴㄹㅇㄹㄴㅇ'}]}])
-  const [value, setValue] = useState("");
   const [comment, setComment] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +16,6 @@ function GuestBook({ auth }) {
       addComment();
     }
   };
-  const today = moment().format("YYYY.MM.DD");
 
   const valueRef = useRef();
 
