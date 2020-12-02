@@ -42,17 +42,14 @@ function App() {
       setCurrentUser(await getCurrentUser());
       setLoading(false);
       setAuthenticated(true);
-      console.log("왜 안되는거냐");
     } catch (err) {
       try {
         await getAdmin();
         setLoading(false);
         setIsAdmin(true);
         setAuthenticated(true);
-        console.log("넌 관리자냐?");
       } catch (err) {
         setLoading(false);
-        console.log(err && err.message);
       }
     }
   };
@@ -82,7 +79,6 @@ function App() {
         search: queryParams.toString(),
       });
     }
-    console.log(queryParams);
   }, []);
 
   useEffect(() => {
@@ -90,9 +86,8 @@ function App() {
   }, [authenticated]);
 
   useEffect(() => {
-    ReactGA.initialize("UA-183822982-1")
-    ReactGA.pageview(window.location.pathname+window.location.search)
-    console.log(window.location.pathname)
+    ReactGA.initialize("UA-183822982-1");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   });
 
   if (loading) {

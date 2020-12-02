@@ -3,7 +3,6 @@ import {
   TextField,
   Divider,
   IconButton,
-  makeStyles,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -14,37 +13,13 @@ import { url } from "../common/value";
 import axios from "axios";
 import { GUESTBOOK_URL, ACCESS_TOKEN, API_BASE_URL } from "../constants";
 import LoadingIndicator from "../common/LoadingIndicator";
+import styled from "styled-components";
 
 function GuestBook({ auth }) {
   // const [comment, setComment] = useState([{time:"2020.09.28",content:[{id:'text', comment:"메롱"}, {id:'tes1t', comment:'라리룰라'}] }, {time:"2020.09.30", content:[{id:'test', comment:'ㅇㄹㅇㄹㅇ'}]}, {time:"2020.10.01", content:[{id:'test', comment:'ㄴㄹㅇㄹㄴㅇ'}]}])
   const [value, setValue] = useState("");
   const [comment, setComment] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      padding: "2px 4px",
-      display: "flex",
-      alignItems: "center",
-      width: "95%",
-      border: "1px solid black",
-      margin: "0 auto",
-    },
-    input: {
-      marginLeft: theme.spacing(1),
-      flex: 1,
-    },
-    divider: {
-      height: "100%",
-      margin: 4,
-    },
-    profileImage: {
-      width: "10%",
-      height: "30%",
-      marginRight: "4%",
-    },
-  }));
-  const style = useStyles();
 
   const pressEnter = (e) => {
     if (e.key === "Enter") {
@@ -99,36 +74,31 @@ function GuestBook({ auth }) {
   } else {
     return (
       <Fragment>
-        <div className={style.root}>
-          <TextField
+        <Root>
+          <Input
             fullWidth
             inputRef={valueRef}
             type="text"
             onKeyPress={pressEnter}
             placeholder="방명록을 작성해주세요"
-            className={style.input}
           />
-          <Divider className={style.divider} />
+          <CustomDivider />
           <IconButton color="primary" onClick={addComment}>
             <Directions />
           </IconButton>
-        </div>
+        </Root>
         <div style={{ width: "100%", margin: "3px auto" }}>
           {comment.map((data, i) => (
-            <div className={style.root} key={data.modifiedDate}>
+            <Root key={data.modifiedDate + i}>
               {data.user.imageUrl !== null ? (
-                <img
-                  className={style.profileImage}
-                  src={data.user.imageUrl}
-                  alt="userProfile"
-                />
+                <ProfileImage src={data.user.imageUrl} alt="userProfile" />
               ) : (
-                <Person className={style.profileImage} />
+                <InitProfile />
               )}
               {data.user.name}
-              <Divider className={style.divider} />
+              <CustomDivider />
               {data.guestbook}
-            </div>
+            </Root>
           ))}
         </div>
       </Fragment>
@@ -137,3 +107,34 @@ function GuestBook({ auth }) {
 }
 
 export default GuestBook;
+
+const ProfileImage = styled.img`
+  width: 10%;
+  height: 30%;
+  margin-right: 4%;
+`;
+
+const InitProfile = styled(Person)`
+  width: 10%;
+  height: 30%;
+  margin-right: 4%;
+`;
+
+const Root = styled.div`
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  width: 95%;
+  border: 1px solid black;
+  margin: 0 auto;
+`;
+
+const CustomDivider = styled(Divider)`
+  height: 100%;
+  margin: 4px !important;
+`;
+
+const Input = styled(TextField)`
+  margin-left: 10;
+  flex: 1;
+`;

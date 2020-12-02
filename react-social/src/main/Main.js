@@ -18,8 +18,8 @@ function Main() {
         <NavLink
           to="/home"
           style={{
-            position: "absolute",
-            transform: "translate(0, 64vmax)",
+            position: "fixed",
+            transform: "translate(0, 30vmax)",
             width: "15vmax",
             height: "36vmin",
           }}
@@ -39,7 +39,7 @@ const PosterImage = styled.img`
   width: 50vw;
   height: 100vh;
   margin: 0 auto;
-  @media (max-width: 390px) {
+  @media (max-width: 450px) {
     width: 100vw;
     margin: auto;
   }

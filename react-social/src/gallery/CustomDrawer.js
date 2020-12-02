@@ -46,6 +46,7 @@ function CustomDrawer(props) {
         }}
       >
         <div className={classes.drawerHeader}>
+          <span>봄내 온라인 사진전</span>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
@@ -65,7 +66,7 @@ function CustomDrawer(props) {
           width: "100vw",
           height: "100vh",
           boxShadow: "0px 0px 0px 2000px inset rgba(0, 0, 0, 0.5)",
-          position: "absolute",
+          position: "fixed",
           zIndex: 99,
           top: 0,
         }}
@@ -79,6 +80,10 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    position: "absolute",
+    width: "10vw",
+    top: "2%",
+    zIndex: 99,
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
@@ -113,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   content: {
     flexGrow: 1,

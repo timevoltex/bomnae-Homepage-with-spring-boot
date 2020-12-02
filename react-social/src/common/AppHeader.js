@@ -60,12 +60,12 @@ function AppHeader({
         <HeaderContainer className="app-header">
           <div className="container">
             <div className="app-branding">
-              {mobile > 390 ? (
-                <NavLink to="/" className="app-title">
+              {mobile > 450 ? (
+                <NavLink to="/home" className="app-title">
                   봄내 온라인 사진전
                 </NavLink>
               ) : (
-                <NavLink to="/" className="app-title-mobile">
+                <NavLink to="/home" className="app-title-mobile">
                   <img
                     src={Icon}
                     style={{ width: 50, height: 50, textAlign: "center" }}
@@ -139,8 +139,9 @@ const HeaderContainer = styled.header`
     .app-options {
       float: unset;
     }
-    .app-nav {
+    .container {
       text-align: center;
+      margin-top: 10px;
     }
   }
 `;

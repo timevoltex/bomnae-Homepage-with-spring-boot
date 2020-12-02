@@ -22,7 +22,7 @@ class OAuth2RedirectHandler extends Component {
       return (
         <Redirect
           to={{
-            pathname: "/profile",
+            pathname: "/home",
             state: { from: this.props.location },
           }}
         />

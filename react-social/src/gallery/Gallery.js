@@ -21,8 +21,8 @@ function Gallery() {
   const mobile = window.innerWidth;
   return (
     <Grid container>
-      <Grid item xs={mobile > 390 ? 2 : false}>
-        {mobile > 390 ? (
+      <Grid item xs={mobile > 450 ? 2 : false}>
+        {mobile > 450 ? (
           <SideMenu changeFormat={changeFormat} />
         ) : (
           <CustomDrawer>
@@ -30,7 +30,7 @@ function Gallery() {
           </CustomDrawer>
         )}
       </Grid>
-      <Grid item xs={mobile > 390 ? 10 : 12} sm container>
+      <Grid item xs={mobile > 450 ? 10 : 12} sm container>
         <GalleryContent category={category} isDone={isDone} setDone={done} />
       </Grid>
     </Grid>

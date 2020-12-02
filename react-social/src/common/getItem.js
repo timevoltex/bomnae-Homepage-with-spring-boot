@@ -3,7 +3,6 @@ import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 
 export async function getItem(format, subject) {
   if (format === "정기전") {
-    console.log(format);
     const response = await axios.get(
       API_BASE_URL + `/api/v1/artwork/format/정기전`,
       {
