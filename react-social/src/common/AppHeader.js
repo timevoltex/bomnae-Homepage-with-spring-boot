@@ -65,7 +65,8 @@ function AppHeader({
             <div className="app-branding">
               {mobile > 450 ? (
                 <NavLink to="/home" className="app-title">
-                  봄내 온라인 사진전
+                  <img src={Icon} style={{ width: "2.5vmin" }} />
+                  <span>봄내 온라인 사진전</span>
                 </NavLink>
               ) : (
                 <NavLink to="/home" className="app-title-mobile">

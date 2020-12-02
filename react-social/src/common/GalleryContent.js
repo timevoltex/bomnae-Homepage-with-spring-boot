@@ -68,6 +68,18 @@ function GalleryContent({ category, isDone, setDone }) {
     listSlider.slickGoTo(navIndex);
   }
 
+  // 가로사진 세로사진 구분
+  function onImgLoad({ target: img }) {
+    const width = img.offsetWidth;
+    const height = img.offsetHeight;
+    let ratio = width / height;
+    img.className = ratio > 1 ? "landscape" : "portrait";
+    if (ratio > 1) {
+      img.parentElement.style.display = "block";
+      img.style.width = "70vmin";
+    }
+  }
+
   // useEffect(() => {
   //   setNav1(scaleSlider);
   //   setNav2(listSlider);
@@ -84,6 +96,7 @@ function GalleryContent({ category, isDone, setDone }) {
                 setDone(true);
                 setDetail([]);
               } else {
+                //메타데이터 포함 데이터 가져오는 부분
                 data.map(async (image, i) => {
                   const detailResponse = await axios.get(
                     API_BASE_URL + `/api/v1/artwork/${image.id}`,
@@ -155,10 +168,15 @@ function GalleryContent({ category, isDone, setDone }) {
               className="scale"
             >
               {detail.map((image, i) => {
+                console.log(image);
                 return (
                   <div key={i} className="swing-chip">
                     <SliderContainer className="test">
-                      <img src={image.filepath || ""} alt="content" />
+                      <img
+                        src={image.filepath || ""}
+                        alt="content"
+                        onLoad={onImgLoad}
+                      />
                       <ContentDescription>
                         <p>상세정보</p>
                         <p>제목: {image.title}</p>
@@ -236,7 +254,6 @@ const ContentContainer = styled.div`
       min-width: 480px;
       .slick-list {
         overflow: visible;
-        width: 100vw;
       }
     }
   }
