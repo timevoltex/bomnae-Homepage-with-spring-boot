@@ -4,7 +4,13 @@ import "./AppHeader.css";
 import { ADMIN_TOKEN } from "../constants";
 import styled from "styled-components";
 
-function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
+function AppHeader({
+  path,
+  authenticated,
+  onLogout,
+  onAdminLogout,
+  currentUser,
+}) {
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
   if (isAdmin === "true") {
     return (
@@ -77,7 +83,24 @@ function AppHeader({ path, authenticated, onLogout, onAdminLogout }) {
                   ) : (
                     <Fragment>
                       <li>
-                        <NavLink to="/profile">마이페이지</NavLink>
+                        {currentUser.imageUrl ? (
+                          currentUser.provider == "kakao" ? (
+                            <img
+                              class="kakao"
+                              src={currentUser.imageUrl}
+                              alt={currentUser.name}
+                            />
+                          ) : (
+                            <img
+                              class="google"
+                              src={currentUser.imageUrl}
+                              alt={currentUser.name}
+                            />
+                          )
+                        ) : (
+                          <span>{currentUser.name && currentUser.name[0]}</span>
+                        )}
+                        <span> {currentUser.name}</span>
                       </li>
                       <li>
                         <NavLink to="/logout" onClick={onLogout}>

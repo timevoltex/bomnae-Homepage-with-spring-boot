@@ -118,33 +118,21 @@ function App() {
             <Grid container item xs={12} className="app-content">
               <Switch>
                 <Route exact path="/" component={Main}></Route>
-                <PrivateRoute
-                  path="/profile"
-                  authenticated={authenticated}
-                  currentUser={currentUser}
-                  component={Profile}
-                ></PrivateRoute>
                 <Route path="/home" component={Home}></Route>
-                <Route
-                  path="/login"
-                  render={(props) => (
-                    <Login authenticated={authenticated} {...props} />
-                  )}
-                ></Route>
-                <Redirect path="/logout" to="/" />
-                <Redirect path="/admin/signOut" to="/" />
-                <Route
+-                <Route
+-                  path="/login"
+-                  render={(props) => (
+-                    <Login authenticated={authenticated} {...props} />
+-                  )}
+-                ></Route>
+
+<Redirect path="/logout" to="/" />
+<Route
                   path="/admin"
                   render={({ location }) => (
                     <AdminRouter isAdmin={isAdmin} location={location} />
                   )}
                 />
-                <Route
-                  path="/signup"
-                  render={(props) => (
-                    <Signup authenticated={authenticated} {...props} />
-                  )}
-                ></Route>
                 <Route path="/gallery" render={() => <Gallery />} />
                 <Route
                   path="/graduate/:student"

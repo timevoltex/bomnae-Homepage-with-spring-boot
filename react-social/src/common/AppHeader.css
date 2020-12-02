@@ -53,3 +53,17 @@
     width: 100%;
     justify-content: space-between;
 }
+
+.app-nav ul li img.kakao{
+    width: 30px;
+    border-radius: 50%;
+    border: 2px solid#FEE500;
+    vertical-align: text-bottom;
+}
+
+.app-nav ul li img.google{
+    width: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    vertical-align: text-bottom;
+}
