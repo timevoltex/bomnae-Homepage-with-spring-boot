@@ -171,7 +171,6 @@ function GalleryContent({ category, isDone, setDone }) {
               className="scale"
             >
               {detail.map((image, i) => {
-                console.log(image);
                 return (
                   <div key={i} className="swing-chip">
                     <SliderContainer className="test">

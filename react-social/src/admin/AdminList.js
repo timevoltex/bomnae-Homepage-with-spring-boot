@@ -41,9 +41,9 @@ function AdminList() {
   }, []);
   if (!loading) return <div>로딩중....</div>;
   else {
-    console.log(list.length);
     return (
       <div>
+        <p>사진 갯수{list.length}</p>
         {list.map((item, i) => {
           return (
             <ItemContainer key={item.id}>
