@@ -72,9 +72,10 @@ function GalleryContent({ category, isDone, setDone }) {
   function onImgLoad({ target: img }) {
     const width = img.naturalWidth;
     const height = img.naturalHeight;
+    const pc = window.innerWidth > 460 ? true : false;
     let ratio = width / height;
     img.className = ratio > 1 ? "landscape" : "portrait";
-    if (ratio > 1) {
+    if (ratio > 1 && pc) {
       img.parentElement.style.display = "block";
       img.parentElement.style.marginTop = "36vmin";
       img.style.width = "70vmin";
