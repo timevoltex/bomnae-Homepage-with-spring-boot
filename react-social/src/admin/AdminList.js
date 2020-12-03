@@ -41,10 +41,10 @@ function AdminList() {
   }, []);
   if (!loading) return <div>로딩중....</div>;
   else {
+    console.log(list.length);
     return (
       <div>
         {list.map((item, i) => {
-          console.log(item.id);
           return (
             <ItemContainer key={item.id}>
               <img
