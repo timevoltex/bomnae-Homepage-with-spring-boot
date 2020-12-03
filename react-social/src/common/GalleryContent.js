@@ -171,6 +171,7 @@ function GalleryContent({ category, isDone, setDone }) {
               className="scale"
             >
               {detail.map((image, i) => {
+                console.log(image);
                 return (
                   <div key={i} className="swing-chip">
                     <SliderContainer className="test">
@@ -180,28 +181,16 @@ function GalleryContent({ category, isDone, setDone }) {
                         onLoad={onImgLoad}
                       />
                       <ContentDescription>
-                        <p>상세정보</p>
+                        <p style={{ fontWeight: "bold" }}>상세정보</p>
                         <p>제목: {image.title}</p>
-                        <p>기수: {image.artist}</p>
+                        <p>기수: {image.generation}</p>
                         <p>작가: {image.artist}</p>
-                        <p>
-                          설명: Lorem ipsum dolor sit amet, consectetur
-                          adipiscing elit. Nam maximus congue turpis at maximus.
-                          Pellentesque vitae hendrerit tortor. Nunc rutrum
-                          commodo quam, et bibendum nunc. Aliquam vel congue
-                          nibh. Nulla viverra nunc elit, fringilla faucibus
-                          lorem scelerisque id. Mauris venenatis metus lorem,
-                          non aliquam ligula iaculis dignissim. Nulla facilisi.
-                          Proin malesuada ligula vitae lectus feugiat rutrum.
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Nam maximus congue turpis at maximus.
-                          Pellentesque vitae hendrerit tortor. Nunc rutrum
-                          commodo quam, et bibendum nunc. Aliquam vel congue
-                          nibh. Nulla viverra nunc elit, fringilla faucibus
-                          lorem scelerisque id. Mauris venenatis metus lorem,
-                          non aliquam ligula iaculis dignissim. Nulla facilisi.
-                          Proin malesuada ligula vitae lectus feugiat rutrum.
-                        </p>
+                        <p>설명: {image.content}</p>
+                        <p style={{ fontWeight: "bold" }}>메타데이터</p>
+                        <p>기종: {`${image.exif.maker} ${image.exif.model}`}</p>
+                        <p>셔터스피드: {image.exif.exposureTime}</p>
+                        <p>조리개: {image.exif.aperture}</p>
+                        <p>iso: {image.exif.iso}</p>
                       </ContentDescription>
                     </SliderContainer>
                   </div>
