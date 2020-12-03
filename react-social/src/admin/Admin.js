@@ -31,7 +31,6 @@ function Admin() {
     setInfo({ ...info, file: e.target.files[0] });
     const reader = new FileReader();
     reader.onload = (event) => {
-      console.log(event.target.result);
       setThumbnail(event.target.result);
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -52,9 +51,6 @@ function Admin() {
     } else {
       setInfo({ ...info, [inputName]: inputValue });
     }
-    console.log(info);
-    console.log(inputName);
-    console.log(inputValue);
   };
 
   const onChangeFormat = (e) => {
@@ -91,7 +87,6 @@ function Admin() {
 
   const onSubmit = async () => {
     const formData = new FormData();
-    console.log(info.format);
     formData.append("title", info.title);
     formData.append("content", info.content);
     formData.append("file", info.file);
