@@ -88,6 +88,8 @@ function GuestBook({ auth }) {
               )}
               {data.user.name}
               <CustomDivider />
+              <NameDiv />
+              <CustomDivider />
               {data.guestbook}
             </Root>
           ))}
@@ -99,10 +101,15 @@ function GuestBook({ auth }) {
 
 export default GuestBook;
 
+//Namediv를 확인해볼것,
 const ProfileImage = styled.div`
-  width: 10%;
-  height: 30%;
-  margin-right: 4%;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-right: 3%;
+  border-right: thin solid black;
 `;
 
 const InitProfile = styled(Person)`
@@ -118,6 +125,13 @@ const Root = styled.div`
   width: 95%;
   border: 1px solid black;
   margin: 0 auto;
+`;
+
+//사진 div height의 60% 정도로 되게 해야함.
+const NameDiv = styled.div`
+  width: 1px;
+  height: 60px;
+  border-left: 0.5px solid #b5b5b5;
 `;
 
 const CustomDivider = styled(Divider)`
