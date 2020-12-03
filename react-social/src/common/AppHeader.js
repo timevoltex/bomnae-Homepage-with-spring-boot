@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import "./AppHeader.css";
 import { ADMIN_TOKEN } from "../constants";
-import Icon from "../img/bomnaeIcon.jpeg";
+import Icon from "../img/headerLogo.png";
 import styled from "styled-components";
 
 function AppHeader({

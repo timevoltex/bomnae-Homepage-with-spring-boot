@@ -54,7 +54,6 @@ function GuestBook({ auth }) {
     };
     info().then((response) => {
       setComment(response);
-      console.log(response);
       setLoading(false);
     });
   }, [loading]);
@@ -126,4 +125,5 @@ const CustomDivider = styled(Divider)`
 const Input = styled(TextField)`
   margin-left: 10;
   flex: 1;
+  padding-left: 8px;
 `;
