@@ -79,7 +79,10 @@ function GuestBook({ auth }) {
           {comment.map((data, i) => (
             <Root key={data.modifiedDate + i}>
               {data.user.imageUrl !== null ? (
-                <ProfileImage src={data.user.imageUrl} alt="userProfile" />
+                <ProfileImage
+                  style={{ backgroundImage: `url(${data.user.imageUrl})` }}
+                  alt="userProfile"
+                />
               ) : (
                 <InitProfile />
               )}
@@ -96,7 +99,7 @@ function GuestBook({ auth }) {
 
 export default GuestBook;
 
-const ProfileImage = styled.img`
+const ProfileImage = styled.div`
   width: 10%;
   height: 30%;
   margin-right: 4%;

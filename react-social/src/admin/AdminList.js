@@ -65,11 +65,6 @@ function AdminList() {
                   >
                     전시정보 수정
                   </Link>
-                  <Link
-                    to={{ pathname: "/admin/meta", state: { item: item.id } }}
-                  >
-                    메타데이터 수정
-                  </Link>
                 </FormContainer>
               </div>
             </ItemContainer>

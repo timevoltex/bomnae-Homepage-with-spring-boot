@@ -6,14 +6,7 @@ import styled, { keyframes } from "styled-components";
 function Main() {
   return (
     <Fragment>
-      <div
-        style={{
-          width: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#313131",
-        }}
-      >
+      <MainContainer>
         <PosterImage src={Poster} alt="MainPage" />
         <Open to="/home">
           <InnerCircle delay={0} />
@@ -22,20 +15,12 @@ function Main() {
           <InnerCircle delay={0.75} />
           <InnerCircle delay={1} />
         </Open>
-      </div>
+      </MainContainer>
     </Fragment>
   );
 }
 export default Main;
 
-const openAnimate = keyframes`
-  from{ 
-    opacity: 0;
-  }
-  to{
-    opacity: 0.5;
-  }
-`;
 const openAnimate1 = keyframes`
 
   to{
@@ -66,12 +51,22 @@ const openAnimate5 = keyframes`
     transform: rotateX(75deg) rotateY(30deg) rotate(1turn)
     }
 `;
+
+const MainContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: #313131;
+  @media only screen and (max-width: 460px) {
+    height: 100vh;
+  }
+`;
+
 const PosterImage = styled.img`
   width: 50vw;
   margin: 0 auto;
   @media (max-width: 450px) {
     width: 100vw;
-    height: 100vh;
     margin: auto;
   }
 `;

@@ -1,5 +1,5 @@
 import React, { useRef, Fragment, useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Slider from "react-slick";
 import { getItem } from "./getItem";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
@@ -16,6 +16,35 @@ function GalleryContent({ category, isDone, setDone }) {
   let listSlider = [];
   const meta = [];
   const [detail, setDetail] = useState([]);
+
+  const SlickArrowLeft = ({ currentSlide, slideCount, ...props }) => (
+    <button
+      {...props}
+      className={
+        "slick-prev slick-arrow" + (currentSlide === 0 ? " slick-disabled" : "")
+      }
+      aria-hidden="true"
+      aria-disabled={currentSlide === 0 ? true : false}
+      type="button"
+    >
+      <KeyboardArrowLeft />
+    </button>
+  );
+  const SlickArrowRight = ({ currentSlide, slideCount, ...props }) => (
+    <button
+      {...props}
+      className={
+        "slick-next slick-arrow" +
+        (currentSlide === slideCount - 1 ? " slick-disabled" : "")
+      }
+      aria-hidden="true"
+      aria-disabled={currentSlide === slideCount - 1 ? true : false}
+      type="button"
+    >
+      <KeyboardArrowRight />
+    </button>
+  );
+
   const settings = {
     dots: false,
     infinite: false,
@@ -24,8 +53,8 @@ function GalleryContent({ category, isDone, setDone }) {
     slidesToScroll: 1,
     fade: true,
     adaptiveHeight: true,
-    nextArrow: <KeyboardArrowRight />,
-    prevArrow: <KeyboardArrowLeft />,
+    nextArrow: <SlickArrowRight />,
+    prevArrow: <SlickArrowLeft />,
     responsive: [
       {
         breakpoint: 450,
@@ -77,57 +106,69 @@ function GalleryContent({ category, isDone, setDone }) {
     img.className = ratio > 1 ? "landscape" : "portrait";
     if (ratio > 1 && pc) {
       img.parentElement.style.display = "block";
-      img.parentElement.style.marginTop = "36vmin";
+      img.parentElement.style.marginTop = "24vmin";
       img.style.width = "70vmin";
     }
-    console.log(ratio);
   }
 
-  // useEffect(() => {
-  //   setNav1(scaleSlider);
-  //   setNav2(listSlider);
-  // }, [scaleSlider, listSlider]);
+  useEffect(() => {
+    setNav1(scaleSlider);
+    setNav2(listSlider);
+  }, [scaleSlider, listSlider]);
 
   useEffect(() => {
-    const getImage = async () => {
-      if (!isDone) {
-        getItem(category.format, category.subject)
-          .then((response) => {
-            const data = response;
-            try {
-              if (data.length === 0) {
-                setDone(true);
-                setDetail([]);
-              } else {
-                //메타데이터 포함 데이터 가져오는 부분
-                data.map(async (image, i) => {
-                  const detailResponse = await axios.get(
-                    API_BASE_URL + `/api/v1/artwork/${image.id}`,
-                    {
-                      headers: {
-                        Authorization: localStorage.getItem(ACCESS_TOKEN),
-                      },
-                    }
-                  );
-                  meta.push(detailResponse.data);
-                  if (i === data.length - 1) {
-                    setDetail(meta);
-                    setDone(true);
-                  }
-                });
-              }
-            } catch (err) {
-              console.log(err);
-              setDone(true);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    const getImage = () => {
+      getItem(category.format, category.subject)
+        .then((response) => {
+          const data = response;
+          if (data.length === 0) {
             setDone(true);
-          });
-      }
+            setDetail([]);
+          } else {
+            //메타데이터 포함 데이터 가져오는 부분
+            data.map(async (image, i) => {
+              try {
+                await axios
+                  .get(API_BASE_URL + `/api/v1/artwork/${image.id}`, {
+                    headers: {
+                      Authorization: localStorage.getItem(ACCESS_TOKEN),
+                    },
+                    cancelToken: source.token,
+                  })
+                  .then((res) => {
+                    meta.push(res.data);
+
+                    if (i === data.length - 1) {
+                      meta.sort((a, b) => a.id - b.id);
+                      setDetail(meta);
+                      setDone(true);
+                    }
+                  });
+              } catch (err) {
+                if (axios.isCancel(err)) {
+                  console.log("canclled");
+                  setDone(true);
+                } else {
+                  throw err;
+                }
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setDone(true);
+        });
     };
+
     getImage();
+
+    return () => {
+      source.cancel();
+    };
   }, [category]);
 
   if (!isDone) {
@@ -143,9 +184,9 @@ function GalleryContent({ category, isDone, setDone }) {
       return (
         <Fragment>
           <ContentContainer className="photo_contents" ref={scaleUp}>
-            <Slider
+            <CustomSlider
               asNavFor={nav1}
-              ref={(slider2) => (listSlider = slider2)}
+              ref={(slider) => (listSlider = slider)}
               {...listSettings}
               className="list"
             >
@@ -163,10 +204,10 @@ function GalleryContent({ category, isDone, setDone }) {
                   </div>
                 );
               })}
-            </Slider>
-            <Slider
+            </CustomSlider>
+            <CustomSlider
               asNavFor={nav2}
-              ref={(slider1) => (scaleSlider = slider1)}
+              ref={(slider) => (scaleSlider = slider)}
               {...settings}
               className="scale"
             >
@@ -195,7 +236,7 @@ function GalleryContent({ category, isDone, setDone }) {
                   </div>
                 );
               })}
-            </Slider>
+            </CustomSlider>
           </ContentContainer>
         </Fragment>
       );
@@ -212,11 +253,26 @@ const ContentContainer = styled.div`
   display: flex;
   height: 90vh;
   width: 60vw;
-  .slick-slider.scale {
+  div{
+    outline: none;
+  }
+  @media only screen and (max-width: 450px) {
+    width: 100%;
+    display: block;
+`;
+
+const CustomSlider = styled(Slider)`
+  &.list {
+    display: none;
+  }
+  &.scale .slick-current {
+    z-index: 99;
+  }
+  &.slick-slider.scale {
     width: 70vmax;
     align-self: center;
   }
-  .slick-slider.list {
+  &.slick-slider.list {
     position: absolute;
     width: 10vw;
     right: 0;
@@ -224,7 +280,7 @@ const ContentContainer = styled.div`
       height: 70vmin;
     }
   }
-  .scale .slick-track {
+  &.scale .slick-track {
     display: flex;
   }
   .slick-track .slick-slide {
@@ -233,7 +289,7 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
   }
-  .scale .slick-slide {
+  &.scale .slick-slide {
     height: 80vh;
   }
   .slick-next {
@@ -246,19 +302,12 @@ const ContentContainer = styled.div`
     color: black;
     z-index: 99;
   }
-  .scale .slick-list {
+  &.scale .slick-list {
     overflow: visible;
   }
 
-  @media only screen and (min-width: 451px) {
-    .slick-slider.list {
-      :hover {
-        width: 20vw;
-      }
-    }
-  }
   @media only screen and (max-width: 1150px) {
-    .slick-slider.scale {
+    &.slick-slider.scale {
       margin-top: 45vmin;
       height: 100%;
       min-width: 480px;
@@ -268,9 +317,7 @@ const ContentContainer = styled.div`
     }
   }
   @media only screen and (max-width: 450px) {
-    width: 100%;
-    display: block;
-    .slick-slider.scale {
+    &.slick-slider.scale {
       width: 100vw;
       margin-top: 10px;
       min-width: unset;
@@ -278,11 +325,17 @@ const ContentContainer = styled.div`
         overflow: hidden;
       }
     }
-    .scale .slick-slide {
+    &.scale .slick-slide {
       height: auto;
     }
+    .slick-track .slick-slide {
+      align-items: unset;
+    }
 
-    .slick-slider.list {
+    &.list {
+      display: block;
+    }
+    &.slick-slider.list {
       position: unset;
       width: 90vw;
       margin: auto;
@@ -308,6 +361,22 @@ const SliderContainer = styled.div`
 
   img {
     width: 50vmin;
+    &.landscape {
+      z-index: 99;
+      transform: scale(1);
+      transition: transform 0.5s;
+      :hover {
+        transform: scale(1.5) translate(0, 15%);
+      }
+    }
+    &.portrait {
+      z-index: 99;
+      transform: scale(1);
+      transition: transform 0.5s;
+      :hover {
+        transform: scale(1.5) translate(20%, 10%);
+      }
+    }
   }
   @media (max-width: 1150px) {
     display: block;

@@ -128,9 +128,8 @@ function AdminUpdate({ ...props }) {
         data.exif.hibernateLazyInitializer = undefined;
         delete data.exif.hibernateLazyInitializer;
 
-        setUpdate(data);
         setMeta(data.exif);
-        console.log(data.exif);
+        console.log(data);
         setLoading({ ...loading, loading: false });
       } catch (err) {
         console.log(err.message);

@@ -58,6 +58,14 @@
   .login-content {
     width: 90vw;
   }
+  .login-title {
+    font-size: 1em;
+  }
+  .or-seperator {
+    font-size: 0.8em;
+    padding: 9px 0;
+  }
+
   .social-btn.github {
     background-color: #ffe500;
     background-size: contain;
@@ -70,5 +78,9 @@
 
   .google img {
     height: 24px;
+  }
+
+  .form-control {
+    font-size: 0.7em;
   }
 }
