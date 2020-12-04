@@ -312,7 +312,7 @@ const CustomSlider = styled(Slider)`
     z-index: 99;
   }
   &.scale .slick-list {
-    overflow: visible;
+    overflow-y: visible;
   }
 
   @media only screen and (max-width: 1150px) {
