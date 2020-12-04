@@ -89,6 +89,7 @@ function AdminUpdate({ ...props }) {
     setFormat();
     setUpdate({ ...update, exif: meta });
     setLoading({ ...loading, setting: false });
+    console.log(update);
     if (!loading.setting) {
       await axios
         .post(
@@ -103,6 +104,7 @@ function AdminUpdate({ ...props }) {
         )
         .then((response) => {
           console.log(response && response.message);
+
           props.history.push("/admin/list");
         })
         .catch((error) => {
@@ -128,6 +130,7 @@ function AdminUpdate({ ...props }) {
         data.exif.hibernateLazyInitializer = undefined;
         delete data.exif.hibernateLazyInitializer;
 
+        setUpdate(data);
         setMeta(data.exif);
         console.log(data);
         setLoading({ ...loading, loading: false });
