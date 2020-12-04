@@ -74,10 +74,10 @@ function GalleryContent({ category, isDone, setDone }) {
     speed: 500,
     infinite: false,
     dots: false,
-    centerPadding: "60px",
     centerMode: true,
     vertical: true,
     verticalSwiping: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 450,
@@ -104,6 +104,12 @@ function GalleryContent({ category, isDone, setDone }) {
     const pc = window.innerWidth > 460 ? true : false;
     let ratio = width / height;
     img.className = ratio > 1 ? "landscape" : "portrait";
+
+    img.nextElementSibling.classList.add(
+      ratio > 1 ? "landscapeContent" : "portraitContent"
+    );
+
+    ratio > 1 ? "landscapeContent" : "portraitContent";
     if (ratio > 1 && pc) {
       img.parentElement.style.display = "block";
       img.parentElement.style.marginTop = "24vmin";
@@ -149,7 +155,6 @@ function GalleryContent({ category, isDone, setDone }) {
                   });
               } catch (err) {
                 if (axios.isCancel(err)) {
-                  console.log("canclled");
                   setDone(true);
                 } else {
                   throw err;
@@ -213,7 +218,11 @@ function GalleryContent({ category, isDone, setDone }) {
             >
               {detail.map((image, i) => {
                 return (
-                  <div key={i} className="swing-chip">
+                  <div
+                    key={i}
+                    className="swing-chip"
+                    style={{ height: "fit-content" }}
+                  >
                     <SliderContainer className="test">
                       <img
                         src={image.filepath || ""}
@@ -378,6 +387,7 @@ const SliderContainer = styled.div`
       }
     }
   }
+
   @media (max-width: 1150px) {
     display: block;
     img {
@@ -388,6 +398,12 @@ const SliderContainer = styled.div`
     display: block;
     img {
       width: 83vmin;
+      &.landscape,
+      &.portrait {
+        :hover {
+          transform: none;
+        }
+      }
     }
   }
 `;
@@ -396,7 +412,6 @@ const ContentDescription = styled.div`
   width: 50vmin;
   background-color: white;
   margin-left: 10px;
-
   @media (max-width: 450px) {
     width: 80vmin;
   }

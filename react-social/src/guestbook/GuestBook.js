@@ -31,7 +31,6 @@ function GuestBook({ auth }) {
           }
         )
         .then((response) => {
-          console.log(response.code);
           setLoading(false);
         })
         .catch((e) => {

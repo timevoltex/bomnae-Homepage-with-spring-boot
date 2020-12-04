@@ -1,16 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
-
+import welcome1 from "../img/welcome1.png";
+import welcome2 from "../img/welcome2.png";
 function Home() {
   return (
     <HomeContainer className="home-container">
       <Slider arrows={false} adaptiveHeight={true}>
         <div>
-          <WelcomeTitle>인사말</WelcomeTitle>
+          <WelcomeTitle className="container">인사말</WelcomeTitle>
           <WelcomeContainer className="container">
             <Content>
-              <p className="content">
+              <img className="content" src={welcome2} />
+              {/* <p className="content">
                 반갑습니다. 봄내의 온라인 사진전 세계로 오신 것을 환영합니다.
                 2020년은 코로나로 인해 사진전 준비에 많은 어려움이 있었습니다.
                 특히 오프라인 활동에 제약이 있어 신입회원들과 관련한 활동들이
@@ -34,10 +36,11 @@ function Home() {
                 것처럼, 코로나라는 어두운 터널을 뚫고 밝은 미래로 나아갈 수
                 있기를 바라면서 글을 마칩니다.
               </p>
-              <p className="author">회장 47기 정지훈</p>
+              <p className="author">회장 47기 정지훈</p> */}
             </Content>
             <Content>
-              <p className="content">
+              <img className="content" src={welcome1} />
+              {/* <p className="content">
                 사진에 대한 노력의 결과를 온라인 사진전을 통해 내보이게
                 되었습니다. 동기들이 하나하나 고심하고 만들어낸  결실을 사진전에
                 참석하여 따뜻한 마음으로 지켜봐 주세요.
@@ -46,7 +49,7 @@ function Home() {
                 50기 친구들에게 의미 있고 보람찬 신인전으로 기억되길 바라며.
                 많이 걷고, 많이 생각하며, 많이 찍자
               </p>
-              <p className="author">50기 기장 임지은</p>
+              <p className="author">50기 기장 임지은</p> */}
             </Content>
           </WelcomeContainer>
         </div>
@@ -206,11 +209,13 @@ const HomeContainer = styled.div`
   position: relative;
   width: 90vw;
   margin: 0 auto 10px auto;
+  div {
+    outline: none;
+  }
 `;
 
 const WelcomeTitle = styled.h1`
   text-align: left;
-  margin-left: 2.5vmax;
   @media only screen and (max-width: 460px) {
     text-align: center;
     margin-left: 0;
@@ -240,6 +245,7 @@ const Content = styled.div`
   }
   .content {
     text-align: left;
+    width: 100%;
   }
   .author {
     text-align: right;
