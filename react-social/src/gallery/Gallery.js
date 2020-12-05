@@ -39,7 +39,7 @@ function Gallery() {
           <CustomDrawer>
             <SideMenu changeFormat={changeFormat} />
 
-            <Copyright className="sidedraw">
+            <Copyright>
               <h5>Copyright 2020 봄내사진예술연구회 all rights reserved.</h5>
               <h5>
                 본 온라인 사진전 내의 모든 사진은 저작권법에 따라 보호받습니다.
@@ -58,11 +58,8 @@ function Gallery() {
 export default Gallery;
 
 const Copyright = styled.div`
-  position: absolute;
+  position: relative;
   width: 240px;
   bottom: 0;
   margin-left: 1vmin;
-  &.sidedraw {
-    position: relative;
-  }
 `;
