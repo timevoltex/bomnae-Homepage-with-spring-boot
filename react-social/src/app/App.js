@@ -26,8 +26,9 @@ import { Grid } from "@material-ui/core";
 import GraduateContent from "../graduate/GraduateContent";
 import AdminRouter from "../admin/AdminRouter";
 import ReactGA from "react-ga";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 import theme from "../theme";
+import font from "../font/flower_road.otf";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -67,6 +68,10 @@ function App() {
     Alert.success("로그아웃 되었습니다.");
   };
 
+  //Chrome에 최적화되었으므로 Chrome인지 검사
+  const isChrome = navigator.userAgent.toLocaleLowerCase();
+
+  //사용자 추적을 위한 GA
   const query = useHistory();
   const pLoaction = useLocation();
 
@@ -89,11 +94,18 @@ function App() {
     ReactGA.pageview(window.location.pathname + window.location.search);
   });
 
+  useEffect(() => {
+    if (isChrome.indexOf("chrome") === -1) {
+      alert("크롬에 최적화 되어있습니다. 크롬브라우저를 이용해주세요!");
+    }
+  }, []);
+
   if (loading) {
     return <LoadingIndicator />;
   } else {
     return (
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
         <div className="app">
           <Route
             render={({ location }) => {
@@ -155,3 +167,17 @@ function App() {
 }
 
 export default App;
+
+const GlobalStyle = createGlobalStyle`
+  @font-face{
+    font-family: 'Flower road';
+    src: url(${font}) ;
+    font-weight: 400;
+    font-style: normal;
+    font-display: auto;
+  }
+
+  div, span, p, h1, h2, h3, h4, h5{
+    font-family: "Flower road"!important;
+  }
+`;

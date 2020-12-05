@@ -1,21 +1,29 @@
-import React, { useRef, Fragment, useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import React, { Fragment, useState, useEffect, useRef } from "react";
+import styled from "styled-components";
 import Slider from "react-slick";
 import { getItem } from "./getItem";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 import axios from "axios";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
+import {
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  Apps,
+} from "@material-ui/icons";
 import LoadingIndicator from "./LoadingIndicator";
+import ScaleUp from "../gallery/ScaleUp";
+import ShowAllPhoto from "../gallery/ShowAllPhoto";
 
 function GalleryContent({ category, isDone, setDone }) {
-  const scaleUp = useRef(document.createElement("div"));
-  const [nav1, setNav1] = useState(null);
-  const [nav2, setNav2] = useState(null);
   const [navIndex, setNavIndex] = useState(0);
-  let scaleSlider = [];
-  let listSlider = [];
+  const slider = useRef();
   const meta = [];
   const [detail, setDetail] = useState([]);
+  const [allphoto, setAllphoto] = useState(false);
+  const [scaleUp, setScaleUp] = useState({
+    open: false,
+    filepath: "",
+    landscape: "",
+  });
 
   const SlickArrowLeft = ({ currentSlide, slideCount, ...props }) => (
     <button
@@ -45,6 +53,7 @@ function GalleryContent({ category, isDone, setDone }) {
     </button>
   );
 
+  //메인 슬라이드 세팅
   const settings = {
     dots: false,
     infinite: false,
@@ -63,11 +72,9 @@ function GalleryContent({ category, isDone, setDone }) {
         },
       },
     ],
-    beforeChange: (_, next) => {
-      setNavIndex(next);
-    },
   };
 
+  //모바일 상단 슬라이드 세팅
   const listSettings = {
     slidesToScroll: 1,
     slidesToShow: 3,
@@ -87,15 +94,7 @@ function GalleryContent({ category, isDone, setDone }) {
         },
       },
     ],
-    beforeChange: (_, next) => {
-      setNavIndex(next);
-    },
   };
-  function goTo(index) {
-    setNavIndex(index);
-    scaleSlider.slickGoTo(navIndex);
-    listSlider.slickGoTo(navIndex);
-  }
 
   // 가로사진 세로사진 구분
   function onImgLoad({ target: img }) {
@@ -104,23 +103,33 @@ function GalleryContent({ category, isDone, setDone }) {
     const pc = window.innerWidth > 460 ? true : false;
     let ratio = width / height;
     img.className = ratio > 1 ? "landscape" : "portrait";
-
+    setScaleUp({ ...scaleUp, landscape: ratio > 1 ? "landscape" : "portrait" });
     img.nextElementSibling.classList.add(
       ratio > 1 ? "landscapeContent" : "portraitContent"
     );
-
-    ratio > 1 ? "landscapeContent" : "portraitContent";
     if (ratio > 1 && pc) {
       img.parentElement.style.display = "block";
-      img.parentElement.style.marginTop = "24vmin";
+      img.parentElement.style.marginTop = "44vmin";
       img.style.width = "70vmin";
     }
   }
 
-  useEffect(() => {
-    setNav1(scaleSlider);
-    setNav2(listSlider);
-  }, [scaleSlider, listSlider]);
+  // 사진 선택시 확대 모드
+  const handleScaleUp = ({ target: img }) => {
+    setScaleUp({ landscape: img.className, open: true, filepath: img.src });
+  };
+  const handleClose = () => {
+    setScaleUp({ ...scaleUp, open: false });
+  };
+
+  // 전체 사진 열기
+  const handleAllPhoto = () => {
+    setAllphoto(true);
+  };
+  const handleClosePhoto = (value) => {
+    setAllphoto(false);
+    slider.current.slickGoTo(value);
+  };
 
   useEffect(() => {
     const CancelToken = axios.CancelToken;
@@ -188,34 +197,9 @@ function GalleryContent({ category, isDone, setDone }) {
     } else {
       return (
         <Fragment>
-          <ContentContainer className="photo_contents" ref={scaleUp}>
-            <CustomSlider
-              asNavFor={nav1}
-              ref={(slider) => (listSlider = slider)}
-              {...listSettings}
-              className="list"
-            >
-              {detail.map((src, i) => {
-                return (
-                  <div key={src.filePath + src.id}>
-                    <Image
-                      style={{
-                        backgroundImage: `url("${src.filepath}")`,
-                      }}
-                      onClick={() => goTo(i)}
-                    >
-                      {/* <img style={{width:}} src={src.filePath} alt="content" onClick={onClick} /> */}
-                    </Image>
-                  </div>
-                );
-              })}
-            </CustomSlider>
-            <CustomSlider
-              asNavFor={nav2}
-              ref={(slider) => (scaleSlider = slider)}
-              {...settings}
-              className="scale"
-            >
+          <ContentContainer className="photo_contents">
+            <OpenAllPhoto onClick={handleAllPhoto} />
+            <CustomSlider {...settings} ref={slider} className="scale">
               {detail.map((image, i) => {
                 return (
                   <div
@@ -228,6 +212,7 @@ function GalleryContent({ category, isDone, setDone }) {
                         src={image.filepath || ""}
                         alt="content"
                         onLoad={onImgLoad}
+                        onClick={handleScaleUp}
                       />
                       <ContentDescription>
                         <p style={{ fontWeight: "bold" }}>상세정보</p>
@@ -247,6 +232,13 @@ function GalleryContent({ category, isDone, setDone }) {
               })}
             </CustomSlider>
           </ContentContainer>
+          <ScaleUp open={scaleUp} onClose={handleClose} />
+          <ShowAllPhoto
+            open={allphoto}
+            index={navIndex}
+            data={detail}
+            onClose={handleClosePhoto}
+          />
         </Fragment>
       );
     }
@@ -335,7 +327,7 @@ const CustomSlider = styled(Slider)`
       }
     }
     &.scale .slick-slide {
-      height: auto;
+      height: fit-content;
     }
     .slick-track .slick-slide {
       align-items: unset;
@@ -355,11 +347,16 @@ const CustomSlider = styled(Slider)`
   }
 `;
 
-const Image = styled.div`
-  width: 16vw;
-  height: 16vw;
-  background-size: cover;
-  background-position: center;
+const OpenAllPhoto = styled(Apps)`
+  z-index: 99;
+  position: absolute;
+  font-size: 3rem;
+  right: 24.3%;
+  @media only screen and (max-width: 460px) {
+    top: 3%;
+    right: 8%;
+    font-size: 2rem;
+  }
 `;
 
 const SliderContainer = styled.div`
@@ -370,22 +367,6 @@ const SliderContainer = styled.div`
 
   img {
     width: 50vmin;
-    &.landscape {
-      z-index: 99;
-      transform: scale(1);
-      transition: transform 0.5s;
-      :hover {
-        transform: scale(1.5) translate(0, 15%);
-      }
-    }
-    &.portrait {
-      z-index: 99;
-      transform: scale(1);
-      transition: transform 0.5s;
-      :hover {
-        transform: scale(1.5) translate(20%, 10%);
-      }
-    }
   }
 
   @media (max-width: 1150px) {
@@ -398,12 +379,6 @@ const SliderContainer = styled.div`
     display: block;
     img {
       width: 83vmin;
-      &.landscape,
-      &.portrait {
-        :hover {
-          transform: none;
-        }
-      }
     }
   }
 `;
@@ -412,6 +387,13 @@ const ContentDescription = styled.div`
   width: 50vmin;
   background-color: white;
   margin-left: 10px;
+  font-size: 1.1rem;
+  &.landscapeContent {
+    width: 64vmin;
+  }
+  &.portraitContent {
+    align-self: center;
+  }
   @media (max-width: 450px) {
     width: 80vmin;
   }

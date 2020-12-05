@@ -9,6 +9,7 @@ import {
   RadioGroup,
 } from "@material-ui/core";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
+import CheckAgain from "./CheckAgain";
 function Admin() {
   const [thumbnail, setThumbnail] = useState("");
   const [fresh, isFresh] = useState(false);
@@ -68,7 +69,7 @@ function Admin() {
   };
 
   const setFormat = () => {
-    if (formatValue.gallery === "정기전") {
+    if (formatValue.gallery === "정기전" || formatValue.gallery === "졸업전") {
       setInfo({ ...info, format: formatValue.gallery });
     } else {
       if (formatValue.subject === "자유") {
@@ -83,6 +84,7 @@ function Admin() {
         });
       }
     }
+    alert(`적용되었습니다. ${info.artist + info.content + info.format}`);
   };
 
   const onSubmit = async () => {
@@ -174,6 +176,12 @@ function Admin() {
             label="신인전"
             labelPlacement="end"
           />
+          <FormControlLabel
+            value="졸업전"
+            control={<Radio />}
+            label="졸업전"
+            labelPlacement="end"
+          />
         </RadioGroup>
         <div style={fresh ? { display: "block" } : { display: "none" }}>
           <NativeSelect
@@ -231,8 +239,10 @@ function Admin() {
             업로드
           </Button>
         </label>
-        <button onClick={setFormat}>형식 적용(먼저 누르고 제출!)</button>
-        <button onClick={onSubmit}>제출</button>
+        <button onClick={setFormat} style={{ marginBottom: "4vmin" }}>
+          형식 적용(먼저 누르고 제출!)
+        </button>
+        <CheckAgain onSubmit={onSubmit} value={info} />
       </div>
       <img src={thumbnail} style={{ width: "50vmax" }} alt="thumbnail" />
     </div>

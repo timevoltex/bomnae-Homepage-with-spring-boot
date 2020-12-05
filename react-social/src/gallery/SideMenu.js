@@ -21,9 +21,9 @@ function SideMenu({ changeFormat }) {
   };
 
   const onhandleSub = (format, sub) => {
-    if (format === "정기전" && sub === null) {
+    if ((format === "정기전" || format === "졸업전") && sub === null) {
       setIsFree(false);
-      changeFormat("정기전", undefined);
+      changeFormat(format, undefined);
       setSubject("");
     } else if (format === "신인전" && sub === "자유") {
       setIsFree(true);

@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect, useRef } from "react";
 import { TextField, Divider, IconButton } from "@material-ui/core";
 import { Directions, Person } from "@material-ui/icons";
+import moment from "moment";
 import axios from "axios";
 import { GUESTBOOK_URL, ACCESS_TOKEN, API_BASE_URL } from "../constants";
 import LoadingIndicator from "../common/LoadingIndicator";
@@ -61,7 +62,7 @@ function GuestBook({ auth }) {
   } else {
     return (
       <Fragment>
-        <Root>
+        <Root className="input">
           <Input
             fullWidth
             inputRef={valueRef}
@@ -76,21 +77,28 @@ function GuestBook({ auth }) {
         </Root>
         <div style={{ width: "100%", margin: "3px auto" }}>
           {comment.map((data, i) => (
-            <Root key={data.modifiedDate + i}>
-              {data.user.imageUrl !== null ? (
-                <ProfileImage
-                  style={{ backgroundImage: `url(${data.user.imageUrl})` }}
-                  alt="userProfile"
-                />
-              ) : (
-                <InitProfile />
-              )}
-              {data.user.name}
-              <CustomDivider />
-              <NameDiv />
-              <CustomDivider />
-              {data.guestbook}
-            </Root>
+            <RootContainer>
+              <Root key={data.modifiedDate + i}>
+                {data.user.imageUrl !== null ? (
+                  <ProfileImage
+                    style={{ backgroundImage: `url(${data.user.imageUrl})` }}
+                    alt="userProfile"
+                  />
+                ) : (
+                  <InitProfile style={{}} />
+                )}
+                {data.user.name}
+                <CustomDivider />
+                <NameDiv />
+                <CustomDivider />
+                {data.guestbook}
+              </Root>
+              <div style={{ textAlign: "right" }}>
+                <span>
+                  {moment(data.modifiedDate, "YYYY-MM-DD").format("YYYY-MM-DD")}
+                </span>
+              </div>
+            </RootContainer>
           ))}
         </div>
       </Fragment>
@@ -102,8 +110,8 @@ export default GuestBook;
 
 //Namediv를 확인해볼것,
 const ProfileImage = styled.div`
-  width: 100px;
-  height: 100px;
+  min-width: 10vmax;
+  min-height: 10vmax;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -112,9 +120,10 @@ const ProfileImage = styled.div`
 `;
 
 const InitProfile = styled(Person)`
-  width: 10%;
-  height: 30%;
-  margin-right: 4%;
+  min-width: 10vmax;
+  min-height: 10vmax;
+  margin-right: 3%;
+  border-right: thin solid black;
 `;
 
 const Root = styled.div`
@@ -122,8 +131,17 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   width: 95%;
+  &.input {
+    border: 1px solid black;
+    margin: 0 auto;
+  }
+`;
+
+const RootContainer = styled.div`
+  padding-top: 4vmin;
   border: 1px solid black;
-  margin: 0 auto;
+  margin: 4px auto;
+  width: 95%;
 `;
 
 //사진 div height의 60% 정도로 되게 해야함.

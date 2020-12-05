@@ -11,6 +11,15 @@ export async function getItem(format, subject) {
     );
     const data = response.data;
     return data;
+  } else if (format === "졸업전") {
+    const response = await axios.get(
+      API_BASE_URL + `/api/v1/artwork/format/졸업전`,
+      {
+        headers: { Authorization: localStorage.getItem(ACCESS_TOKEN) },
+      }
+    );
+    const data = response.data;
+    return data;
   } else if (subject === "자유") {
     const response = await axios.get(
       API_BASE_URL + `/api/v1/artwork/format/신인전-자유`,

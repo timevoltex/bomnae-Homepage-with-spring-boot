@@ -34,7 +34,7 @@ function CustomDrawer(props) {
         edge="start"
         className={classes.menuButton}
       >
-        <MenuIcon />
+        <MenuIcon style={{ fontSize: "2rem" }} />
       </IconButton>
       <Drawer
         className={classes.drawer}
@@ -82,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     position: "absolute",
     width: "10vw",
-    top: "2%",
+    top: "1%",
+    left: "8%",
     zIndex: 99,
   },
   appBar: {

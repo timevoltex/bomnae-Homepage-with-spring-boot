@@ -16,7 +16,7 @@ function AppHeader({
   const isAdmin = localStorage.getItem(ADMIN_TOKEN);
   if (isAdmin === "true") {
     return (
-      <header className="app-header">
+      <AdminHeader className="app-header">
         <div className="container main">
           <div className="app-branding">
             <p className="app-title">관리자 짱짱맨</p>
@@ -39,7 +39,7 @@ function AppHeader({
             </nav>
           </div>
         </div>
-      </header>
+      </AdminHeader>
     );
   } else {
     if (path === "/") {
@@ -65,7 +65,11 @@ function AppHeader({
             <div className="app-branding">
               {mobile > 450 ? (
                 <NavLink to="/home" className="app-title">
-                  <img src={Icon} style={{ width: "2.5vmin" }} />
+                  <img
+                    src={Icon}
+                    style={{ width: "4.5vmin", verticalAlign: "text-bottom" }}
+                    alt="Logo"
+                  />
                   <span>봄내 온라인 사진전</span>
                 </NavLink>
               ) : (
@@ -137,13 +141,31 @@ function AppHeader({
 
 export default AppHeader;
 
+const AdminHeader = styled.header`
+  li {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+`;
+
 const HeaderContainer = styled.header`
+  width: 90vw;
+  margin: 0 auto;
+
   @media only screen and (max-width: 460px) {
     height: auto;
     .app-branding,
     .app-options {
       float: unset;
     }
+    .app-options {
+      margin-bottom: 4vmin;
+    }
+    ul {
+      display: flex;
+      justify-content: space-between;
+    }
+
     .container {
       text-align: center;
       margin-top: 10px;
