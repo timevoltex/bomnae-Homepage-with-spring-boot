@@ -60,7 +60,8 @@ const ImageList = styled.img`
   object-position: center;
   width: 30vw;
   margin-right: 4px;
-  height: 30vw @media only screen and (max-width: 460px) {
+  height: 30vw;
+  @media only screen and (max-width: 460px) {
     width: 25vw;
     height: 25vw;
   }

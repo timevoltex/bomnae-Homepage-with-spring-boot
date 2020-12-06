@@ -95,7 +95,7 @@ function App() {
   });
 
   useEffect(() => {
-    if (isChrome.indexOf("chrome") === -1) {
+    if (isChrome.indexOf("chrome") === -1 || isChrome.indexOf("crios") === -1) {
       alert("크롬에 최적화 되어있습니다. 크롬브라우저를 이용해주세요!");
     }
   }, []);
