@@ -175,4 +175,9 @@ const HeaderContainer = styled.header`
     padding-left: ${(props) => (props.sign ? "8px" : "15px")};
     padding-right: ${(props) => (props.sign ? "8px" : "15px")};
   }
+  @media only screen and (max-width: 360px) {
+    li {
+      font-size: 0.8em;
+    }
+  }
 `;

@@ -58,7 +58,7 @@ function Gallery() {
 export default Gallery;
 
 const Copyright = styled.div`
-  position: absolute;
+  position: relative;
   width: 240px;
   bottom: 0;
   margin-left: 1vmin;

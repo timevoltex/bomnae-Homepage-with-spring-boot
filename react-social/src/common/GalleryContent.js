@@ -350,12 +350,12 @@ const CustomSlider = styled(Slider)`
 const OpenAllPhoto = styled(Apps)`
   z-index: 99;
   position: absolute;
-  font-size: 3rem;
-  right: 24.3%;
+  font-size: 3rem !important;
+  right: 35vmin;
   @media only screen and (max-width: 460px) {
     top: 3%;
     right: 8%;
-    font-size: 2rem;
+    font-size: 2rem !important;
   }
 `;
 

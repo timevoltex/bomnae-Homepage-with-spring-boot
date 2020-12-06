@@ -13,7 +13,6 @@ function ShowAllPhoto(props) {
   const handleSelectPhoto = (value) => {
     onClose(value);
   };
-
   return (
     <CustomDialog
       onClose={handleClose}
@@ -23,14 +22,16 @@ function ShowAllPhoto(props) {
       scroll="body"
     >
       <ImageContainer>
-        {data.map((image, i) => (
-          <ScaleImage
-            style={{ backgroundImage: `url(${image.filepath})` }}
-            onClick={() => handleSelectPhoto(i)}
-            alt="thumbnail"
-            key={data.title}
-          />
-        ))}
+        {data.map((image, i) => {
+          return (
+            <ImageList
+              src={image.filepath}
+              onClick={() => handleSelectPhoto(i)}
+              alt="thumbnail"
+              key={data.title}
+            />
+          );
+        })}
       </ImageContainer>
     </CustomDialog>
   );
@@ -50,18 +51,16 @@ const CustomDialog = styled(Dialog)`
 `;
 
 const ImageContainer = styled.div`
-  margin: 0 auto;
-  width: 95%;
+  margin: 4px auto;
+  width: 90%;
 `;
 
-const ScaleImage = styled.div`
+const ImageList = styled.img`
+  object-fit: cover;
+  object-position: center;
   width: 30vw;
-  height: 30vw;
-  background-position: center;
-  background-size: cover;
-  display: inline-block;
-  @media only screen and (max-width: 460px) {
-    margin-right: 4px;
+  margin-right: 4px;
+  height: 30vw @media only screen and (max-width: 460px) {
     width: 25vw;
     height: 25vw;
   }
