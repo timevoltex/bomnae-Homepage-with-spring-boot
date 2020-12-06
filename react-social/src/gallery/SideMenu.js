@@ -13,6 +13,7 @@ import styled from "styled-components";
 function SideMenu({ changeFormat }) {
   const [open, setOpen] = useState(false);
   const [subject, setSubject] = useState("");
+  const [form, setForm] = useState("정기전");
   const [isFree, setIsFree] = useState(true);
   const [isFresh, setIsFresh] = useState(false);
 
@@ -24,13 +25,16 @@ function SideMenu({ changeFormat }) {
     if ((format === "정기전" || format === "졸업전") && sub === null) {
       setIsFree(false);
       changeFormat(format, undefined);
+      setForm(format);
       setSubject("");
     } else if (format === "신인전" && sub === "자유") {
       setIsFree(true);
+      setForm("신인전");
       changeFormat(format, sub);
       setSubject(sub);
     } else {
       changeFormat(format, sub);
+      setForm("신인전");
       setSubject(sub);
       setIsFree(false);
     }
@@ -54,7 +58,7 @@ function SideMenu({ changeFormat }) {
     >
       <ListItem
         button
-        selected={subject === ""}
+        selected={form === "정기전"}
         onClick={() => onhandleSub("정기전")}
       >
         <ListItemText primary="정기전" />
@@ -179,7 +183,11 @@ function SideMenu({ changeFormat }) {
         </Collapse>
       </Collapse>
 
-      <ListItem button>
+      <ListItem
+        button
+        selected={form === "졸업전"}
+        onClick={() => onhandleSub("졸업전")}
+      >
         <ListItemText primary="졸업전" />
       </ListItem>
     </SideContainer>
