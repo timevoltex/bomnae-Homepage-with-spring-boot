@@ -87,13 +87,13 @@ function GuestBook({ auth }) {
                 ) : (
                   <InitProfile style={{}} />
                 )}
-                {data.user.name}
+                <p className="guestbook_author">{data.user.name}</p>
                 <CustomDivider />
                 <NameDiv />
                 <CustomDivider />
-                {data.guestbook}
+                <p className="guestbook_content">{data.guestbook}</p>
               </Root>
-              <div style={{ textAlign: "right" }}>
+              <div style={{ textAlign: "right", marginLeft: "10px" }}>
                 <span>
                   {moment(data.modifiedDate, "YYYY-MM-DD").format("YYYY-MM-DD")}
                 </span>
@@ -115,14 +115,14 @@ const ProfileImage = styled.div`
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  margin-right: 3%;
+  margin-right: 2%;
   border-right: thin solid black;
 `;
 
 const InitProfile = styled(Person)`
   min-width: 10vmax;
   min-height: 10vmax;
-  margin-right: 3%;
+  margin-right: 2%;
   border-right: thin solid black;
 `;
 
@@ -131,6 +131,12 @@ const Root = styled.div`
   display: flex;
   align-items: center;
   width: 95%;
+  .guestbook_author {
+    min-width: fit-content;
+  }
+  .guestbook_content {
+    max-width: 72vmax;
+  }
   &.input {
     border: 1px solid black;
     margin: 0 auto;
