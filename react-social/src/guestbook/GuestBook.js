@@ -21,23 +21,31 @@ function GuestBook({ auth }) {
   const valueRef = useRef();
 
   const addComment = async () => {
+    const value = valueRef.current.value.trim();
     if (auth) {
-      setLoading(true);
-      await axios
-        .post(
-          `${API_BASE_URL}/guestbook`,
-          { comment: valueRef.current.value },
-          {
-            headers: { Authorization: `${localStorage.getItem(ACCESS_TOKEN)}` },
-          }
-        )
-        .then((response) => {
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
+      if (value === "" || value === null) {
+        valueRef.current.value = "";
+        alert("댓글을 입력해주세요!");
+      } else {
+        setLoading(true);
+        await axios
+          .post(
+            `${API_BASE_URL}/guestbook`,
+            { comment: value },
+            {
+              headers: {
+                Authorization: `${localStorage.getItem(ACCESS_TOKEN)}`,
+              },
+            }
+          )
+          .then((response) => {
+            setLoading(false);
+          })
+          .catch((e) => {
+            console.log(e);
+            setLoading(false);
+          });
+      }
     } else {
       alert("로그인 후 이용할 수 있습니다");
     }
@@ -67,6 +75,7 @@ function GuestBook({ auth }) {
             fullWidth
             inputRef={valueRef}
             type="text"
+            required
             onKeyPress={pressEnter}
             placeholder="방명록을 작성해주세요"
           />
@@ -77,7 +86,7 @@ function GuestBook({ auth }) {
         </Root>
         <div style={{ width: "100%", margin: "3px auto" }}>
           {comment.map((data, i) => (
-            <RootContainer>
+            <RootContainer key={data.user.name + i}>
               <Root key={data.modifiedDate + i}>
                 {data.user.imageUrl !== null ? (
                   <ProfileImage
