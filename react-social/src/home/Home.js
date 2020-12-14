@@ -172,9 +172,8 @@ function Home() {
               </p>
               <p>
                 <span>조승혁</span>
-                <span>최민형(휴)</span>
+                <span>허한길</span>
               </p>
-              <span>허한길</span>
             </p>
             <p className="generation">50기</p>
             <p className="member">
